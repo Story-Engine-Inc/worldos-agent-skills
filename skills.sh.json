@@ -1,0 +1,22 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "World Creation",
+      "description": "Design, validate, create, remix, and update WorldOS Simulation drafts.",
+      "skills": [
+        "worldos-authoring"
+      ]
+    },
+    {
+      "title": "Specialists",
+      "description": "Focused workflows for maps, reusable widgets, and Simulation review.",
+      "skills": [
+        "worldos-map-authoring",
+        "worldos-widget-authoring",
+        "worldos-simulation-review"
+      ]
+    }
+  ]
+}
