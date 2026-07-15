@@ -5,6 +5,15 @@ import process from "node:process";
 const root = process.cwd();
 const skillsRoot = path.join(root, "skills");
 const errors = [];
+const requiredRootFiles = [
+  "README.md",
+  "LICENSE",
+  "NOTICE",
+  "SECURITY.md",
+  "CONTRIBUTING.md",
+  "CODE_OF_CONDUCT.md",
+  "skills.sh.json",
+];
 
 async function walk(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -77,6 +86,14 @@ async function validateLinks(content, file) {
   }
 }
 
+for (const relativePath of requiredRootFiles) {
+  try {
+    await stat(path.join(root, relativePath));
+  } catch {
+    errors.push(`Missing required repository file ${relativePath}`);
+  }
+}
+
 const allFiles = await walk(skillsRoot);
 const skillFiles = allFiles.filter((file) => path.basename(file) === "SKILL.md");
 if (skillFiles.length === 0) errors.push("No SKILL.md files found under skills/");
@@ -119,6 +136,18 @@ for (const file of allFiles) {
   const relativePath = path.relative(root, file);
   const content = await readFile(file, "utf8");
   validatePortableContent(content, relativePath);
+}
+
+for (const relativePath of ["README.md", "SECURITY.md", "CONTRIBUTING.md", "examples/prompts.md"]) {
+  const file = path.join(root, relativePath);
+  try {
+    const content = await readFile(file, "utf8");
+    await validateLinks(content, file);
+    validatePortableContent(content, relativePath);
+  } catch (error) {
+    if (error?.code === "ENOENT") errors.push(`Missing required repository file ${relativePath}`);
+    else throw error;
+  }
 }
 
 const pageConfig = JSON.parse(await readFile(path.join(root, "skills.sh.json"), "utf8"));

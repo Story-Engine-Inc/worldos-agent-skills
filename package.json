@@ -1,8 +1,28 @@
 {
   "name": "worldos-agent-skills",
   "version": "0.1.0",
+  "description": "Portable Agent Skills for creating AI-powered worlds through the WorldOS MCP.",
   "private": true,
   "type": "module",
+  "license": "Apache-2.0",
+  "homepage": "https://worldos.cc",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Story-Engine-Inc/worldos-agent-skills.git"
+  },
+  "keywords": [
+    "worldos",
+    "agent-skills",
+    "mcp",
+    "ai-agents",
+    "world-building",
+    "simulation",
+    "codex",
+    "claude-code"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "validate": "node scripts/validate-skills.mjs"
   }

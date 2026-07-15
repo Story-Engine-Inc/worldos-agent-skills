@@ -1,0 +1,52 @@
+name: Skill bug
+description: Report incorrect, unsafe, or unclear behavior in a WorldOS Agent Skill.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping improve WorldOS Agent Skills. Do not include credentials, private world content, or production data.
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Skill
+      options:
+        - worldos-authoring
+        - worldos-map-authoring
+        - worldos-widget-authoring
+        - worldos-simulation-review
+        - Repository tooling or documentation
+    validations:
+      required: true
+  - type: textarea
+    id: request
+    attributes:
+      label: User request
+      description: Provide a sanitized prompt that reproduces the behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: input
+    id: agent
+    attributes:
+      label: Agent and version
+      placeholder: Codex, Claude Code, Cursor, or another skills-compatible agent
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed credentials, private world content, personal data, and access tokens.
+          required: true

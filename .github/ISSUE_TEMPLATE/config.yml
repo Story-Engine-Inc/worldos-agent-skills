@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/Story-Engine-Inc/worldos-agent-skills/security/advisories/new
+    about: Report vulnerabilities privately. Do not include sensitive details in a public issue.
+  - name: WorldOS
+    url: https://worldos.cc
+    about: Open WorldOS to create and play AI-powered Simulations.

@@ -1,0 +1,34 @@
+name: Skill proposal
+description: Suggest a new workflow or improvement for WorldOS Agent Skills.
+title: "[Proposal]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Authoring problem
+      description: What should an agent be able to accomplish more reliably?
+    validations:
+      required: true
+  - type: textarea
+    id: examples
+    attributes:
+      label: Example requests
+      description: Provide two or three realistic user prompts that should trigger this behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Proposed workflow
+      description: Explain the reusable knowledge or sequence the skill should add.
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Compatibility
+      options:
+        - label: This can use public WorldOS MCP capabilities without private APIs or repository access.
+          required: true
+        - label: This is useful across more than one agent client.
+          required: true
