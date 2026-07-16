@@ -65,7 +65,7 @@ Use this checklist before creating or updating a world.
 - [ ] The playtest covered representative ordinary, quiet, difficult, time, and core-state consequences in proportion to the change.
 - [ ] Each expected narrative consequence appeared on the corresponding player-visible app surface and persisted into later turns.
 - [ ] The temporary playtest was deleted after review; real saves were never changed.
-- [ ] If no runtime preview or isolated/fresh-save playtest was possible, the handoff calls the result a structurally validated draft, labels runtime preview or playtesting unverified, and does not call the Simulation finished.
+- [ ] If no runtime preview or isolated/fresh-save playtest was possible, the handoff calls the result a structurally validated draft, labels runtime preview or playtesting as unverified, and does not call the Simulation finished.
 - [ ] Unless the explicit publishing workflow below succeeded, the handoff says the world is unpublished and requires human review.
 
 ## Publishing only

@@ -103,11 +103,11 @@ After creation or update, use any available read-only browser or page-inspection
 
 When the live contract exposes isolated playtests, call `start_world_playtest` with default setup values and make at least five successful, versioned `playtest_world_turn` calls. The start call and any `get_world_playtest` call do not count as turns. Use this minimum sequence:
 
-1. take an ordinary core-loop action;
-2. take a quiet, preparatory, or waiting action;
-3. take a second quiet action and verify grounded external pressure arrives;
-4. attempt an ambitious action that should fail or succeed only with a cost;
-5. take a follow-up action that proves prior consequences persisted and changed available play.
+1. Take an ordinary core-loop action.
+2. Take a quiet, preparatory, or waiting action.
+3. Take a second quiet action and verify grounded external pressure arrives.
+4. Attempt an ambitious action that should fail or succeed only with a cost.
+5. Take a follow-up action that proves prior consequences persisted and changed available play.
 
 Use additional turns, up to the live limit, for a real chat-surface relationship interaction and a real map-surface action when those systems apply; do not replace them with main-input narration. Across the run, verify time progression and at least one core resource or objective change. Verify that consequences appear on player-visible app surfaces and remain consistent in later turns. Use `get_world_playtest` only to recover the current session version or snapshot, not as a substitute for a turn or a history API. Delete the temporary session after review.
 

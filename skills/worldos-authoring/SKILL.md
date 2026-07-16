@@ -183,7 +183,7 @@ Report:
 - installed apps and which persistent facts each owns;
 - the opening action available to the player;
 - validation warnings that remain relevant;
-- isolated playtest actions run, player-visible surfaces changed, and defects still unverified;
+- isolated playtest actions run, player-visible surfaces changed, any unresolved defects, and checks that remain unverified;
 - assets or copy that need human review;
 - any unsupported request that was intentionally left undone.
 
