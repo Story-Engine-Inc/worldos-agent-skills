@@ -1,6 +1,6 @@
 ---
 name: worldos-map-authoring
-description: Author, inspect, validate, or update a WorldOS region map through the WorldOS MCP. Use when a Simulation needs geographic regions, factions, territorial ownership, country labels, markers, regional actions, or a historical or strategic map; also use when reviewing an existing owned draft map.
+description: Author, inspect, validate, or update a WorldOS region map through the WorldOS MCP, including sourcing and processing lawful external geometry. Use when a Simulation needs geographic regions, factions, territorial ownership, country labels, markers, regional actions, an open geographic dataset, or a historical or strategic map; also use when reviewing an existing owned draft map.
 ---
 
 # WorldOS Map Authoring
@@ -16,7 +16,7 @@ Build a readable and internally consistent region map as part of an unpublished 
 
 At the current contract, region maps may be authored from scratch with strict geometry and reference validation, while tile maps require remixing. If the live guide changes, follow it.
 
-Read [references/map-quality.md](references/map-quality.md) before composing labels, markers, or a large set of regions.
+Read [references/map-quality.md](references/map-quality.md) before composing labels, markers, or a large set of regions. Read [references/map-sources-and-processing.md](references/map-sources-and-processing.md) before finding, downloading, or adapting external geometry.
 
 ## Choose a map branch
 
@@ -99,6 +99,8 @@ The WorldOS MCP does not upload assets. External backgrounds and faction images 
 
 Region geometry may be derived from lawful public-domain or appropriately licensed geographic sources. Record relevant attribution in `backgroundAttribution` or the closest current contract field.
 
+Use the source-discovery and download workflow in [references/map-sources-and-processing.md](references/map-sources-and-processing.md). Verify the current license at the source before every download; a free download or public repository does not by itself grant reuse rights.
+
 ## Validate in layers
 
 Before the full draft write:
@@ -106,11 +108,12 @@ Before the full draft write:
 1. Check IDs for uniqueness.
 2. Check every owner, faction, character, region, label, and marker reference.
 3. Check every path against the view box.
-4. Check that region count and path detail are proportionate to actual decisions.
-5. Check label density and positions.
-6. Check map-specific validation from `get_world_map` when available.
-7. Call `validate_world_draft` on the complete world.
-8. Repair every map error and reassess each warning.
+4. Check source URL, version or retrieval date, license, attribution, file integrity, and coordinate reference system.
+5. Check that region count and path detail are proportionate to actual decisions.
+6. Check label density and positions.
+7. Check map-specific validation from `get_world_map` when available.
+8. Call `validate_world_draft` on the complete world.
+9. Repair every map error and reassess each warning.
 
 After a write, fetch the world and map again. Verify region, faction, action, and marker counts as well as the new world version and preview URL.
 
