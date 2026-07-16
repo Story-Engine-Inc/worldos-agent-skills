@@ -24,6 +24,30 @@ For each region:
 
 Large map payloads should prioritize playable geometry over coastline precision.
 
+## Large strategic map budget
+
+Do not carry every source province into a global or continent-scale Simulation. Thousands of regions and highly detailed paths make the draft harder to inspect and can consume runtime context without adding meaningful choices. Aim for the smallest map that preserves the player's actual fronts, routes, supply decisions, and political distinctions.
+
+Vary resolution by strategic importance:
+
+- keep player territory, active fronts, contested corridors, and major powers relatively fine-grained;
+- merge secondary powers, quiet interiors, remote territory, and large colonial holdings more aggressively;
+- keep an original region only when its separate identity changes movement, ownership, resources, diplomacy, or another player decision.
+
+When lawfully sourced geometry is available, merge adjacent regions that share an initial owner and strategic role. Prefer real administrative groupings first. Split an oversized grouping into geographically coherent pieces, for example along its long axis, instead of creating arbitrary scattered clusters. For historical empires, a coherent territorial area may cross modern country boundaries when the historical owner and gameplay role are the same.
+
+Use a topology-aware dissolve so shared interior borders disappear while the exterior boundary remains recognizable. Apply only light simplification after merging. Simplifying each polygon independently can create cracks, overlaps, and visibly mismatched borders.
+
+Name merged areas with a stable cascade:
+
+1. retain the source name for a single region;
+2. use a real shared administrative or geographic name for an intact group;
+3. add a geographic qualifier or anchor region when a known group is split;
+4. fall back to a directional label plus the polity or territory name;
+5. make every resulting label and ID unique.
+
+After merging, regenerate anchors and bounds, then recheck owners, labels, markers, regional state, actions, and every cross-reference. Compare region count and path detail before and after the merge, and inspect the preview at both overview and local-front zoom levels. A lower count is useful only if the map still supports the intended decisions.
+
 ## Disconnected territory labels
 
 A single faction can own disconnected land clusters. One label at the bounding-box center may fall in water or on another faction.

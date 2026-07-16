@@ -95,6 +95,8 @@ Prefer a small, coherent state model over many decorative panels. A persistent f
 4. Select the smallest set that expresses the core loop and persistent state.
 5. Include at least one clear player-action surface.
 
+Match the action surface to the turn structure. Keep single-action input when one decision should resolve the turn. For strategy, operations, or management worlds where one turn represents a coordinated plan, prefer a player-input configuration that can queue several editable actions and execute them together. Use only modes documented by the selected app's live guide; do not invent configuration fields from memory.
+
 Prefer existing apps. World-specific flavor belongs in each app installation config, including display copy, focused app instructions, and opening data. Do not create a widget merely to reproduce an existing app.
 
 If a required reusable interface does not exist, use the `worldos-widget-authoring` workflow if it is available. If the world needs a region map, use the `worldos-map-authoring` workflow before final validation.
@@ -145,6 +147,7 @@ Pay particular attention to:
 - duplicate IDs or app installations;
 - exclusive-surface conflicts;
 - missing player-action surfaces;
+- an action-input mode that matches the world's single-decision or coordinated-plan loop;
 - unresolved character, faction, region, marker, post, or chat references;
 - legacy locale fields;
 - region-map geometry and remix safety;

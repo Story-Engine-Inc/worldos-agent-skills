@@ -51,3 +51,9 @@ Expected boundary: save and turn access remains read-only. The agent reports beh
 > Create the canonical world copy in Japanese and add natural English and Simplified Chinese locale overlays. Keep IDs and template variables unchanged across locales. Do not introduce fields such as `titleEn` or `titleZh`.
 
 Expected boundary: all translations use generic `i18n[locale]` overlays and preserve structural identifiers.
+
+## Adapt a Pax Historia preset
+
+> Adapt this exact Pax Historia preset version into a playable unpublished WorldOS Simulation. Preserve the player fantasy, distinctive conflicts, and Advisor intent, but rebuild prompt-only objectives, abilities, inventory, money, relationships, time, and known deadlines as app-owned persistent state. Give every required setup field a default and background options, start with an active story hook, and make long-term progression strict but visibly rewarding. Audit the source and show me the proposed state ownership before creating anything.
+
+Expected boundary: the agent freezes the source version, separates preserved content from rebuilt mechanics, discovers and reads live app guides, and remains read-only until the user explicitly approves creation. It never copies Pax platform instructions or bypasses the WorldOS MCP.

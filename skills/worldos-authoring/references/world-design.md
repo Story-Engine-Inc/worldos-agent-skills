@@ -83,3 +83,9 @@ Every installed app should answer one of these questions:
 - How can I act?
 
 If an app does not support the core loop, remove it. More windows do not automatically create more depth.
+
+## Match input granularity to the turn
+
+Use one submitted action per turn when the experience centers on a decisive move, conversation, or immediate response. Use a live-guide-supported multi-action mode when a turn naturally contains several coordinated orders, such as diplomacy, production, research, and military movement planned together.
+
+Do not use multi-action input merely to make the interface feel more advanced. The world rules must explain how the combined plan resolves, including conflicts, ordering, time, cost, opposition, and partial failure. Each queued item remains an attempted player action, not a guaranteed outcome.

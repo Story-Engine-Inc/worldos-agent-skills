@@ -15,6 +15,7 @@ Use this checklist before creating or updating a world.
 - [ ] The player fantasy, scale, and authority are clear.
 - [ ] The opening establishes place, identity, pressure, and a first action.
 - [ ] At least one player-action surface is installed.
+- [ ] Its input mode matches whether a turn is one decision or a coordinated multi-action plan.
 - [ ] Choices have trade-offs and persistent consequences.
 - [ ] Non-player characters and factions have goals and agency.
 - [ ] Difficulty treats declarations as attempts rather than automatic success.
