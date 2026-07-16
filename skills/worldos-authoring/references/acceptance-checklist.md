@@ -50,4 +50,15 @@ Use this checklist before creating or updating a world.
 - [ ] Every warning was fixed or consciously accepted.
 - [ ] The post-write world was fetched or summarized successfully.
 - [ ] Title, slug, visibility, apps, URLs, and latest version match the intended result.
-- [ ] The handoff says the world is unpublished and requires human review.
+- [ ] Unless the explicit publishing workflow below succeeded, the handoff says the world is unpublished and requires human review.
+
+## Publishing only
+
+Use this section only when the user explicitly requested publication.
+
+- [ ] The exact target world and public visibility were explicitly confirmed by the user.
+- [ ] A stable HTTPS cover is attached; signed-upload completion succeeded when a cover was uploaded.
+- [ ] `validate_world_for_publish` returned `ready: true` with reviewer permission.
+- [ ] The publish call uses the exact latest `updatedAt` and required literal confirmation.
+- [ ] The user was told that published worlds can no longer be edited through MCP.
+- [ ] The handoff reports publication only from a successful `publish_world` result and includes the public URL.
