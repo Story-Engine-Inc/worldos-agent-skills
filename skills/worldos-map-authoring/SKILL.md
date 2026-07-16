@@ -95,7 +95,7 @@ Keep region attributes few and actionable. Examples include control, unrest, sup
 
 ## Assets and attribution
 
-The WorldOS MCP does not upload assets. External backgrounds and faction images must be legally reusable, stable, publicly reachable, and attributed when required. Do not scrape protected maps, use session-bound URLs, or download promotional art to imitate an existing product.
+The WorldOS MCP uploads world covers only; it does not upload map backgrounds or faction images. External map assets must be legally reusable, stable, publicly reachable, and attributed when required. Do not scrape protected maps, use session-bound URLs, or download promotional art to imitate an existing product.
 
 Region geometry may be derived from lawful public-domain or appropriately licensed geographic sources. Record relevant attribution in `backgroundAttribution` or the closest current contract field.
 

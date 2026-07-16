@@ -1,6 +1,6 @@
 {
   "name": "worldos-agent-skills",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Portable Agent Skills for creating AI-powered worlds through the WorldOS MCP.",
   "private": true,
   "type": "module",

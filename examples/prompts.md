@@ -6,7 +6,7 @@ These prompts demonstrate how to ask a skills-compatible agent to create and rev
 
 > Create an unpublished WorldOS Simulation called “The Last Embassy.” The player is a junior diplomat on a space station where Earth, Mars, and the Belt are negotiating a ceasefire. Include five chat-able characters, faction reputation, confidential email, an inventory of evidence, station time, and three opening actions. Make every persistent fact belong to exactly one installed app. Validate the draft and summarize what still needs human review. Do not publish it.
 
-Expected boundary: the agent may research the live authoring guide, search apps, validate, and create an owned draft. Publication stays manual.
+Expected boundary: the agent may research the live authoring guide, search apps, validate, and create an owned draft. Creation does not imply publication.
 
 ## Design first, write later
 
@@ -25,6 +25,14 @@ Expected boundary: the agent identifies the owned source through the MCP and cre
 > Add a region map to my unpublished draft. Create eight contiguous districts around a central harbor, split them between three factions, connect every land region, and make labels readable at the default view. Link faction leaders to the matching chat characters. Validate geometry and references before updating the world.
 
 Expected boundary: the map skill follows the live region-map contract and uses optimistic concurrency when updating the draft.
+
+## Upload a cover and publish only on request
+
+> Upload this WebP image as the cover for my owned draft, validate the complete Simulation for publishing, and summarize every remaining error or warning. Do not publish it yet.
+
+> Publish my owned “The Last Embassy” draft now. Re-fetch its latest version, run the publish validation, and proceed only if the cover, moderation, permissions, and full world validation pass. I understand that it will become public and can no longer be edited through MCP.
+
+Expected boundary: cover upload is complete only after the signed upload is finalized. Publication requires the second prompt's explicit request, reviewer permission, clean validation, and exact latest version.
 
 ## Create a widget only when needed
 
