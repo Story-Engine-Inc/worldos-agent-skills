@@ -163,6 +163,16 @@ For a create, generate a stable idempotency key of 8–200 characters. Reuse the
 
 After a create, call `get_world_summary`. After an update, call `get_owned_world`. Verify title, slug, visibility, installed apps, URLs, and the latest version. A structurally valid draft is not a completed playtest.
 
+For a new world or a change that affects opening state, prompts, apps, maps, pacing, or progression, use the live isolated-playtest tools when available:
+
+1. Call `start_world_playtest` with default or deliberately chosen setup values and inspect the player-visible opening.
+2. Call `playtest_world_turn` with the exact session version for a bounded sequence of natural-language actions. Check that prose and the expected app surfaces change together.
+3. Use `get_world_playtest` to recover the latest version after a lost response or version conflict.
+4. If the draft changes, discard the stale session and start again; playtests are bound to the world version they began from.
+5. Call `delete_world_playtest` after review. Do not leave temporary sessions merely to preserve evidence.
+
+Test proportionately. A new gameplay draft normally needs an ordinary action, quiet or waiting behavior, a difficult or failed attempt, time progression, and one core resource, relationship, objective, or map consequence. A copy-only metadata edit does not require replaying the full loop. Temporary playtests never authorize changes to real saves.
+
 ## Deliver the result
 
 Report:
@@ -173,6 +183,7 @@ Report:
 - installed apps and which persistent facts each owns;
 - the opening action available to the player;
 - validation warnings that remain relevant;
+- isolated playtest actions run, player-visible surfaces changed, any unresolved defects, and checks that remain unverified;
 - assets or copy that need human review;
 - any unsupported request that was intentionally left undone.
 
@@ -182,7 +193,7 @@ Never say the Simulation is published unless `publish_world` succeeded in this c
 
 - Do not edit published resources or resources owned by another account.
 - Do not delete, transfer, unpublish, or publish without the explicit reviewer workflow above.
-- Do not mutate, repair, rewind, rename, or delete saves.
+- Do not mutate, repair, rewind, rename, or delete real saves. Use only live isolated-playtest tools for temporary authoring sessions.
 - Do not create built-in apps or modify shared/published apps.
 - Do not expose raw operations, state paths, prompts, model/provider details, or other system internals to players.
 - Do not bypass an MCP refusal through another data source or private endpoint.

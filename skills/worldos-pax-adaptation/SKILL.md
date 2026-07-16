@@ -71,10 +71,12 @@ Treat extraordinary declarations as attempts, not facts. For difficult long-term
 
 ## Choose the map branch deliberately
 
-- Use no map when geography does not materially affect decisions.
+- Before choosing a branch, record whether the Pax source includes a map and whether location, travel, territorial ownership, regional state, or map actions affect the core loop.
+- If the source includes a gameplay-relevant map or the adapted core loop depends on any of those geographic facts, use the `worldos-map-authoring` workflow and build or remix a validated map. This is a required adaptation branch, not optional polish.
+- Use no map only when geography is genuinely decorative or interchangeable. State that conclusion explicitly in the preflight and handoff.
 - Use a new region map only when lawful geometry, coherent ownership, and stable references can pass validation.
 - Use remix when the live contract protects a source map or requires remixing, including current tile-map restrictions.
-- Treat Pax geometry and imagery as reference material unless reuse is lawful and technically stable.
+- Treat Pax geometry and imagery as reference material unless reuse is lawful and technically stable. Copyright or asset instability may block copying the source art, but does not by itself justify omitting a gameplay-required map: create an original schematic region map or use another lawful source when the live contract permits it.
 - Use east-west wrapping only for a genuinely global map; disable it for bounded regional maps to avoid repeated horizontal worlds.
 
 For any region map, use the `worldos-map-authoring` workflow when available. Keep territorial owners as factions; represent villages, clans, organizations, and points of interest as characters or markers when they are not sovereign territory.
@@ -99,8 +101,16 @@ Do not edit a published resource or one owned by another account. Do not delete,
 
 After creation or update, use any available read-only browser or page-inspection capability to open the returned preview with default setup values. Check the opening, visible app names, cover, localization, and any raw `{{...}}`, `inv:`, or `app:` leakage. If preview inspection is unavailable, mark runtime rendering unverified.
 
-Ask the user to start a fresh Simulation when a playtest is needed; the MCP does not create or mutate saves. Once an owned save exists, review it only through read-only save and turn tools, preferably with the `worldos-simulation-review` workflow when available.
+When the live contract exposes isolated playtests, call `start_world_playtest` with default setup values and make at least five successful, versioned `playtest_world_turn` calls. The start call and any `get_world_playtest` call do not count as turns. Use this minimum sequence:
 
-Test the opening, an ordinary arc, a failed ambitious attempt, time progression, one resource change, one relationship interaction, and one map move when applicable. Verify that five turns create visible progress and that the world introduces credible pressure after quiet play.
+1. Take an ordinary core-loop action.
+2. Take a quiet, preparatory, or waiting action.
+3. Take a second quiet action and verify grounded external pressure arrives.
+4. Attempt an ambitious action that should fail or succeed only with a cost.
+5. Take a follow-up action that proves prior consequences persisted and changed available play.
 
-Report the exact Pax source version, chosen adaptation form, preserve/rebuild/omit decisions, installed apps and state ownership, map and asset choices, validation results, editor and preview URLs, preview and playtest scope, and remaining human review. Call the result a structurally validated draft and explicitly state that runtime preview or playtesting remains unverified until each relevant check has actually passed. Never claim the Simulation is published unless the explicit live publishing workflow succeeded.
+Use additional turns, up to the live limit, for a real chat-surface relationship interaction and a real map-surface action when those systems apply; do not replace them with main-input narration. Across the run, verify time progression and at least one core resource or objective change. Verify that consequences appear on player-visible app surfaces and remain consistent in later turns. Use `get_world_playtest` only to recover the current session version or snapshot, not as a substitute for a turn or a history API. Delete the temporary session after review.
+
+If the draft changes during repair, delete the version-bound session, fetch the new world version, and restart the playtest. If isolated playtest tools are unavailable, ask the user to start a fresh Simulation, then review it only through read-only save and turn tools. Never mutate a real save.
+
+Report the exact Pax source version, chosen adaptation form, preserve/rebuild/omit decisions, installed apps and state ownership, map gate outcome and asset choices, validation results, editor and preview URLs, preview and playtest scope, player-visible surfaces changed, and remaining human review. Call the result a structurally validated draft and explicitly state that runtime preview or playtesting remains unverified until each relevant check has actually passed. Never claim the Simulation is published unless the explicit live publishing workflow succeeded.

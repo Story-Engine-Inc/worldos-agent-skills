@@ -118,7 +118,14 @@ When an option claims to change a durable opening fact, make an option-coverage 
 
 ## Map adaptation
 
-Use a map only when location, movement, ownership, or regional action matters.
+Apply a mandatory map gate before assembling the draft:
+
+1. Record whether the Pax source contains a map or map-owned facts.
+2. Record whether location, movement, ownership, regional state, or regional action changes player decisions in the adapted core loop.
+3. If either answer identifies gameplay-relevant geography, invoke the map-authoring workflow and create or remix a validated map.
+4. Omit the map only when geography is genuinely decorative or interchangeable, or when the live contract blocks every lawful implementation. Record the reason; do not silently downgrade a geographic Simulation.
+
+An unlicensed Pax image or geometry blocks copying that asset, not map gameplay itself. Prefer an original schematic region map or lawfully sourced geometry when a map is required.
 
 For a region map:
 
@@ -169,6 +176,8 @@ Treat Pax geometry and imagery as reference material unless reuse is lawful and 
 - [ ] Stable IDs and template variables survive every locale.
 - [ ] Generic `i18n[locale]` overlays replace language-suffixed fields.
 - [ ] Character, chat, post, faction, region, owner, and marker references resolve.
+- [ ] The source-map/core-loop gate was recorded; every gameplay-relevant geographic adaptation invoked the map-authoring workflow.
+- [ ] A required map was not omitted merely because Pax artwork or geometry could not be copied.
 - [ ] Map geometry, ownership, assets, and attribution pass the relevant checks.
 - [ ] A bounded regional map does not repeat horizontally.
 
@@ -179,7 +188,10 @@ Treat Pax geometry and imagery as reference material unless reuse is lawful and 
 - [ ] An update uses the latest complete draft and exact version.
 - [ ] The post-write draft is re-fetched or summarized successfully.
 - [ ] The returned preview was inspected when read-only page access was available; raw templates and internal window IDs are not visible.
-- [ ] Without a preview or fresh-save playtest, the handoff calls the result a structurally validated draft with runtime preview or playtesting still unverified, rather than finished.
-- [ ] Any fresh playtest save was started by the user rather than created or altered through MCP.
-- [ ] Any save review remains owner-scoped and read-only.
+- [ ] When exposed by the live contract, the isolated playtest completed at least five successful turn calls: ordinary action, quiet action, second quiet action with external pressure, ambitious failure/cost, and a persistence-confirming follow-up.
+- [ ] Applicable relationship and map checks used their real chat and map interaction surfaces, with additional turns when necessary.
+- [ ] Expected consequences changed the correct player-visible surfaces and remained consistent in later turns.
+- [ ] The temporary playtest session was deleted after review.
+- [ ] Without a preview or isolated/fresh-save playtest, the handoff calls the result a structurally validated draft with runtime preview or playtesting still unverified, rather than finished.
+- [ ] Any real-save review remains owner-scoped and read-only.
 - [ ] The handoff identifies remaining asset, copy, preview, and publishing review.
