@@ -46,6 +46,10 @@ Expected boundary: all translations use generic `i18n[locale]` overlays and pres
 
 ## Adapt a Pax Historia preset
 
-> Adapt this exact Pax Historia preset version into a playable unpublished WorldOS Simulation. Preserve the player fantasy, distinctive conflicts, and Advisor intent, but rebuild prompt-only objectives, abilities, inventory, money, relationships, time, and known deadlines as app-owned persistent state. Give every required setup field a default and background options, start with an active story hook, and make long-term progression strict but visibly rewarding. Audit the source and show me the proposed state ownership before creating anything.
+> Adapt this exact Pax Historia preset version into a playable unpublished WorldOS Simulation. Preserve the player fantasy, distinctive conflicts, and Advisor intent. First identify what the player controls and repeatedly decides; then rebuild only the durable mechanics that support that interaction model. Audit the source and show me the proposed state ownership before creating anything.
 
-Expected boundary: the agent freezes the source version, separates preserved content from rebuilt mechanics, discovers and reads live app guides, and remains read-only until the user explicitly approves creation. It never copies Pax platform instructions or bypasses the WorldOS MCP.
+Expected boundary: the agent freezes the source version, derives the adaptation form instead of assuming a background-driven RPG, separates preserved content from rebuilt mechanics, discovers and reads live app guides, and remains read-only until the user explicitly approves creation. It never copies Pax platform instructions or bypasses the WorldOS MCP.
+
+> Adapt this council-management Pax preset. The player controls the council as an institution, not a customizable person. Do not add a name, persona, personal inventory, or life-history picker unless the source requires one.
+
+Expected boundary: the agent builds around institutional decisions, members, resources, deadlines, and consequences rather than reusing an individual-character template.

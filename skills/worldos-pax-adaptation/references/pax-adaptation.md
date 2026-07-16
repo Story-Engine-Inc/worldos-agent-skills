@@ -24,7 +24,7 @@ Use live app discovery before selecting an implementation. The responsibilities 
 | --- | --- | --- |
 | Scenario prompt | World scenario rules | Keep only setting-wide causality, authority, pacing, difficulty, and autonomous behavior. |
 | Long opening lore | Intro and Story opening | Keep immediate context and a live hook; remove encyclopedia detail and future spoilers. |
-| Player setup | Setup fields | Provide stable keys, semantic roles, real defaults, and clickable background or life-history options. |
+| Player setup | Optional `config.initFields` | Add only inputs that change or personalize the chosen experience. A fixed protagonist, organization, state, or god-view world may need none. |
 | `chatWithAdvisor` | Advisor presets | Preserve explanation and strategic guidance without creating another Advisor system. |
 | Objectives and power goals | Quests | Create staged prerequisites and retain progress after failed attempts. |
 | Skills, rank, wounds, and pressure | Appropriate Stats responsibility | Make consequential conditions visible and persistent. |
@@ -39,6 +39,22 @@ Use live app discovery before selecting an implementation. The responsibilities 
 | Difficulty | Rules plus staged state | Use preparation, resistance, uncertainty, cost, and consequences rather than repetitive refusal. |
 
 Reject any adaptation where an important durable mechanic exists only as prose in a prompt.
+
+## Choose the adaptation form
+
+Do not treat every Pax source as a life-path RPG. Identify what the player controls and what kind of decision repeats:
+
+- a fixed protagonist making embodied choices;
+- a customizable individual whose identity materially changes play;
+- an ensemble shaped by conversations and relationships;
+- an investigator connecting people, places, claims, and evidence;
+- a household or dynasty managing lineage, obligations, and succession;
+- an organization or business allocating people, money, and projects;
+- a faction or state directing diplomacy, territory, production, and war;
+- a manager or builder optimizing a changing system;
+- a god-view or counterfactual player applying interventions and observing consequences.
+
+These are diagnostic examples, not templates. A source may combine forms or require another one. Select apps from the actual recurring decisions and durable consequences. Do not add personal inventory to a state strategy world, a map to a relationship chamber drama, or a background selector to a fixed-protagonist story unless it changes the core loop.
 
 ## Core-loop conversion
 
@@ -91,12 +107,14 @@ An extraordinary starting trait may accelerate progress, but it does not erase r
 Include:
 
 - current date and place;
-- player identity, background, and authority;
+- the person, group, institution, territory, or viewpoint the player controls and its authority;
 - one concrete problem already in motion;
 - only the context needed for the first choice;
 - several distinct suggestions covering a bold main-arc route, a social or investigative route, a measurable progression route, and an optional safer route.
 
-Give every required setup field a real default. Give background fields selectable life-history options that are compatible with the default origin. Keep the opening short enough that the player sees the decision rather than an encyclopedia.
+Player setup is optional. Put it only in `config.initFields`, and give every required field a real default. Keep the opening short enough that the player sees the decision rather than an encyclopedia.
+
+When an option claims to change a durable opening fact, make an option-coverage table using only the affected facts. Depending on the source, columns might include location, allegiance, controlled character or faction, resources, relationships, capabilities, known information, objectives, or time period. There is no universal list. Verify each option against every seeded app. If the live contract cannot represent the differences, narrow or split the options rather than faking variety in prose.
 
 ## Map adaptation
 
@@ -123,6 +141,7 @@ Treat Pax geometry and imagery as reference material unless reuse is lawful and 
 - [ ] The exact Pax source and version are recorded.
 - [ ] Preserve, rebuild, omit, and verify decisions are explicit.
 - [ ] The player fantasy, authority, opening decision, and core loop are clear.
+- [ ] The adaptation form comes from the source rather than a default RPG or strategy template.
 - [ ] The user explicitly authorized any intended write.
 
 ### Apps and state
@@ -136,7 +155,8 @@ Treat Pax geometry and imagery as reference material unless reuse is lawful and 
 
 ### Playability
 
-- [ ] Required setup fields have usable defaults and clickable options.
+- [ ] Player setup exists only when useful; required fields use `config.initFields` and have usable defaults.
+- [ ] Every consequential setup option is consistent with all seeded app state, or the option set was narrowed.
 - [ ] The opening contains a live hook and distinct actions.
 - [ ] Quiet play triggers grounded external pressure within two turns.
 - [ ] Ordinary arcs resolve or transform within a few meaningful turns.
@@ -145,6 +165,7 @@ Treat Pax geometry and imagery as reference material unless reuse is lawful and 
 
 ### Integrity and localization
 
+- [ ] Every `{{...}}` token resolves from `config.initFields` or a real character variable.
 - [ ] Stable IDs and template variables survive every locale.
 - [ ] Generic `i18n[locale]` overlays replace language-suffixed fields.
 - [ ] Character, chat, post, faction, region, owner, and marker references resolve.
@@ -157,6 +178,8 @@ Treat Pax geometry and imagery as reference material unless reuse is lawful and 
 - [ ] A create uses a stable source-versioned idempotency key.
 - [ ] An update uses the latest complete draft and exact version.
 - [ ] The post-write draft is re-fetched or summarized successfully.
+- [ ] The returned preview was inspected when read-only page access was available; raw templates and internal window IDs are not visible.
+- [ ] Without a preview or fresh-save playtest, the handoff calls the result an unverified draft rather than finished.
 - [ ] Any fresh playtest save was started by the user rather than created or altered through MCP.
 - [ ] Any save review remains owner-scoped and read-only.
 - [ ] The handoff identifies remaining asset, copy, preview, and publishing review.

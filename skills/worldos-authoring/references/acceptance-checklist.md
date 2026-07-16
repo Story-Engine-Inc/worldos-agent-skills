@@ -13,6 +13,7 @@ Use this checklist before creating or updating a world.
 ## Playability
 
 - [ ] The player fantasy, scale, and authority are clear.
+- [ ] The interaction model was derived from that fantasy rather than copied from a generic RPG, strategy, or social template.
 - [ ] The opening establishes place, identity, pressure, and a first action.
 - [ ] At least one player-action surface is installed.
 - [ ] Its input mode matches whether a turn is one decision or a coordinated multi-action plan.
@@ -27,6 +28,15 @@ Use this checklist before creating or updating a world.
 - [ ] App-specific behavior is not duplicated in the world prompt.
 - [ ] Stable IDs are unique and all cross-references resolve.
 - [ ] Hidden future events are not leaked through seeded calendars or feeds.
+- [ ] Optional apps such as quests, inventory, chats, stats, and maps exist because the core loop needs them, not because a template listed them.
+
+## Player setup when present
+
+- [ ] Setup fields live in `config.initFields`; no invented `setupFields` container exists.
+- [ ] Every required setup field has a usable default.
+- [ ] `player_name` and `player_persona` roles exist only when the experience needs them.
+- [ ] Every consequential option is compatible with the seeded opening, or the live contract explicitly represents its different initial facts.
+- [ ] Every `{{...}}` token resolves from an init field or world character.
 
 ## Apps and specialists
 
@@ -50,4 +60,6 @@ Use this checklist before creating or updating a world.
 - [ ] Every warning was fixed or consciously accepted.
 - [ ] The post-write world was fetched or summarized successfully.
 - [ ] Title, slug, visibility, apps, URLs, and latest version match the intended result.
+- [ ] The returned preview was inspected with default setup values when read-only page access was available; no raw template token or internal window ID is visible.
+- [ ] If no runtime preview or fresh-save playtest was possible, the handoff labels those checks unverified and does not call the Simulation finished.
 - [ ] The handoff says the world is unpublished and requires human review.
