@@ -67,6 +67,8 @@ Each region needs:
 
 Avoid self-intersecting, empty, microscopic, or wildly out-of-bounds paths. Do not create a country as one giant region for a strategic map that depends on territorial movement; use meaningful provinces, states, districts, or zones.
 
+For a large strategic map, set a region and geometry budget before drafting the final payload. Preserve fine regions where the player's decisions and active fronts need them, and merge less important territory into larger coherent areas. Follow the large-map workflow in [references/map-quality.md](references/map-quality.md); do not send thousands of decorative micro-regions merely because the source dataset contains them.
+
 ## Define factions and characters
 
 - Give every faction a stable unique ID, distinct label, readable color, and suitable avatar when available.
@@ -104,10 +106,11 @@ Before the full draft write:
 1. Check IDs for uniqueness.
 2. Check every owner, faction, character, region, label, and marker reference.
 3. Check every path against the view box.
-4. Check label density and positions.
-5. Check map-specific validation from `get_world_map` when available.
-6. Call `validate_world_draft` on the complete world.
-7. Repair every map error and reassess each warning.
+4. Check that region count and path detail are proportionate to actual decisions.
+5. Check label density and positions.
+6. Check map-specific validation from `get_world_map` when available.
+7. Call `validate_world_draft` on the complete world.
+8. Repair every map error and reassess each warning.
 
 After a write, fetch the world and map again. Verify region, faction, action, and marker counts as well as the new world version and preview URL.
 
