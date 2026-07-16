@@ -85,6 +85,8 @@ Write a concise design brief before choosing apps:
 - credible win, loss, or long-term progress conditions;
 - the first decision the player can make.
 
+Do not begin from a fixed RPG template. Derive the interaction model from the requested fantasy: a fixed protagonist, a customizable individual, an ensemble relationship drama, an investigation, a household or dynasty, an organization or business, a faction or state, a management builder, or a god-view counterfactual may all need different apps and turn structures. Player setup, quests, inventory, character chats, stats, and maps are optional; include each only when it supports the chosen loop.
+
 Prefer a small, coherent state model over many decorative panels. A persistent fact must have one authoritative owner. Do not duplicate the same money, health, relationship, quest, or inventory value across multiple apps.
 
 ## Discover and understand apps
@@ -126,10 +128,12 @@ Keep prompts lean. Do not repeat app data structures or tool internals in the wo
 - Give every character a stable, unique ID.
 - Keep the cast small enough for each character to have a distinct role, motivation, leverage, and relationship to the player.
 - Ensure every character reference in chats, posts, factions, markers, stats, and prompts resolves to a real character.
-- Use `player_name` and `player_persona` for the standard player setup roles when relevant.
+- Player setup is optional. A fixed protagonist, state, organization, or god-view Simulation may need no name or persona field at all.
+- Put setup fields only in `config.initFields`; never invent `setupFields` or another container. Use `{key:"player_name", role:"name"}` and `{key:"player_persona", role:"persona"}` only when those concepts are genuinely part of the experience.
 - Use character template variables for references to customizable characters, including references inside every app’s opening data.
 - Provide useful defaults and clickable options for required setup fields so a player can start immediately.
-- Use Advisor presets for explanation and strategic guidance, never to take actions on the player’s behalf.
+- If a setup option claims to change affiliation, location, era, equipment, condition, authority, or another durable opening fact, verify that every option is compatible with the shared opening state or can be represented through a conditional mechanism documented by the live contract. Otherwise narrow the options or split the experience; do not offer cosmetic choices that contradict seeded state.
+- Put Advisor presets in `config.advisorPresets` for explanation and strategic guidance, never to take actions on the player’s behalf.
 
 ## Localize as structured data
 
@@ -153,9 +157,11 @@ Pay particular attention to:
 - region-map geometry and remix safety;
 - successful runtime derivation.
 
+Before writing, audit every `{{...}}` token against `config.initFields` and the world character IDs. After writing, use any available read-only browser or page-inspection capability to open the returned preview with default setup values. Check that no raw template token or internal window identifier such as `inv:` or `app:` is visible. If preview inspection is unavailable, state that runtime rendering remains unverified instead of calling the Simulation finished.
+
 For a create, generate a stable idempotency key of 8–200 characters. Reuse the same key only when retrying the exact same intent and identical draft. Change the revision when draft content changes materially.
 
-After a create, call `get_world_summary`. After an update, call `get_owned_world`. Verify title, slug, visibility, installed apps, URLs, and the latest version.
+After a create, call `get_world_summary`. After an update, call `get_owned_world`. Verify title, slug, visibility, installed apps, URLs, and the latest version. A structurally valid draft is not a completed playtest.
 
 ## Deliver the result
 

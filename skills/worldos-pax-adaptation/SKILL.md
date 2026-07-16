@@ -34,9 +34,11 @@ Summarize and transform source prose; do not reproduce long Pax prompts or other
 
 ## Define the adaptation brief
 
+First choose the adaptation form from the source instead of assuming a customizable individual RPG. Pax presets may become a fixed-protagonist narrative, relationship ensemble, investigation, household or dynasty, organization or business simulation, faction or state strategy, management world, or open counterfactual sandbox. Preserve what the player controls and repeatedly decides. Do not add a background picker, inventory, quests, character chats, stats, or a map merely because another adaptation used them.
+
 Before assembling a draft, state:
 
-- the player's identity and authority scale;
+- the player-controlled person, group, institution, territory, or viewpoint and its authority scale;
 - the immediate opening pressure and first meaningful decision;
 - the repeating two-to-three-turn core loop;
 - the visible progress expected after about five turns;
@@ -49,17 +51,19 @@ Do not preserve a passive encyclopedia opening. Convert routine travel, preparat
 
 Use `search_apps` for each required capability and call `get_app_guide` for every app under consideration. Search results and live guides, not remembered slugs or schemas, determine the installation plan.
 
-Assign each persistent fact to exactly one authoritative app. Typical responsibilities include Story for the current situation, Quests for staged objectives, Stats for abilities and conditions, Inventory for possessions, Wallet for money, Chats for reachable contacts, Time for elapsed time, Calendar for known appointments, and Map for geography and territorial control. Treat these as responsibilities, not guaranteed app names.
+Assign each persistent fact that matters to the chosen loop to exactly one authoritative app. Typical responsibilities include Story for the current situation, Quests for staged objectives, Stats for abilities and conditions, Inventory for possessions, Wallet for money, Chats for reachable contacts, Time for elapsed time, Calendar for known appointments, and Map for geography and territorial control. Treat these as optional responsibilities, not a required bundle or guaranteed app names.
 
 Keep world-level causality, player authority, pacing, difficulty, autonomous actors, and win or loss logic in `config.systemPrompt`. Keep app-specific behavior in the relevant app installation prompt. Put all opening state in app installation configs, never in world `config.initialState`.
 
-Preserve Pax `chatWithAdvisor` intent through WorldOS Advisor presets. Advisor explains the world and helps the player reason; it does not act for the player and does not require a parallel chat system.
+Preserve Pax `chatWithAdvisor` intent through `config.advisorPresets`. Advisor explains the world and helps the player reason; it does not act for the player and does not require a parallel chat system.
 
 Prefer the smallest coherent set of existing apps. Include at least one clear player-action surface. Consider a private reusable widget only after catalog search proves that no existing app can represent a required reusable interface.
 
 ## Rebuild the experience for play
 
-Create an active opening with place, identity, pressure, stakes, and several distinct player-voiced actions. Give every required setup field a useful default and clickable options so the Simulation can start immediately. Use standard player and character template variables consistently in world copy and every app seed.
+Create an active opening that establishes the controlled viewpoint, current situation, pressure, stakes, and several distinct actions appropriate to the chosen interaction model. Player setup is optional. When it is needed, put fields in `config.initFields`, give every required field a useful default and clickable options, and use standard player and character template variables consistently in world copy and every app seed. Never invent `setupFields`.
+
+When setup options imply different affiliations, locations, eras, equipment, conditions, authority, or objectives, audit every option against the seeded Story, apps, and characters. If the live contract cannot express those different initial facts, narrow the options, choose one focused opening, or create separate drafts. Do not present a consequential choice that changes only prose while shared state contradicts it.
 
 Maintain one active main arc tied to recent choices. After no more than two quiet turns, introduce a causally grounded message, visitor, summons, discovery, attack, deadline, or other external pressure. Escalate, transform, or resolve an ordinary opportunity within a few meaningful turns.
 
@@ -73,7 +77,9 @@ Treat extraordinary declarations as attempts, not facts. For difficult long-term
 - Treat Pax geometry and imagery as reference material unless reuse is lawful and technically stable.
 - Use east-west wrapping only for a genuinely global map; disable it for bounded regional maps to avoid repeated horizontal worlds.
 
-For any region map, use the `worldos-map-authoring` workflow when available. Keep territorial owners as factions; represent villages, clans, organizations, and points of interest as characters or markers when they are not sovereign territory. The WorldOS MCP cannot upload assets, so report any cover, avatar, or background that still needs a stable lawful replacement.
+For any region map, use the `worldos-map-authoring` workflow when available. Keep territorial owners as factions; represent villages, clans, organizations, and points of interest as characters or markers when they are not sovereign territory.
+
+When a lawful stable cover file is available and the live guide exposes cover upload, use `create_world_cover_upload`, upload the raw JPEG, PNG, or WebP to the signed URL, call `complete_world_cover_upload` with the exact current world version, and re-fetch the draft to verify `config.coverImage`. Do not claim an asset is attached before completion succeeds. Report avatars or backgrounds that still lack an equivalent supported upload path.
 
 ## Localize without changing identity
 
@@ -81,7 +87,7 @@ Use generic `i18n[locale]` overlays and stable IDs. Never create language-suffix
 
 ## Validate and write safely
 
-Call `validate_world_draft` on the complete candidate draft. Repair every error and assess every warning. Confirm app availability, action surfaces, exclusive-surface compatibility, runtime derivation, reference integrity, locale structure, map safety, and one authoritative owner for every durable fact.
+Call `validate_world_draft` on the complete candidate draft. Repair every error and assess every warning. Confirm app availability, action surfaces, exclusive-surface compatibility, runtime derivation, reference integrity, locale structure, map safety, and one authoritative owner for every durable fact. Independently audit every `{{...}}` token against `config.initFields` and the character roster; structural validation alone is not a rendered-preview test.
 
 For a new draft, use a stable idempotency key tied to the Pax source version and adaptation revision. Reuse it only for an identical retry. After creation, call `get_world_summary` and verify the unpublished result.
 
@@ -91,8 +97,10 @@ Do not edit a published resource or one owned by another account. Do not delete,
 
 ## Review the adaptation
 
-After creation or update, ask the user to start a fresh Simulation when a playtest is needed; the MCP does not create or mutate saves. Once an owned save exists, review it only through read-only save and turn tools, preferably with the `worldos-simulation-review` workflow when available.
+After creation or update, use any available read-only browser or page-inspection capability to open the returned preview with default setup values. Check the opening, visible app names, cover, localization, and any raw `{{...}}`, `inv:`, or `app:` leakage. If preview inspection is unavailable, mark runtime rendering unverified.
+
+Ask the user to start a fresh Simulation when a playtest is needed; the MCP does not create or mutate saves. Once an owned save exists, review it only through read-only save and turn tools, preferably with the `worldos-simulation-review` workflow when available.
 
 Test the opening, an ordinary arc, a failed ambitious attempt, time progression, one resource change, one relationship interaction, and one map move when applicable. Verify that five turns create visible progress and that the world introduces credible pressure after quiet play.
 
-Report the exact Pax source version, preserve/rebuild/omit decisions, installed apps and state ownership, map and asset choices, validation results, editor and preview URLs, playtest scope, and remaining human review. Never claim the Simulation is published.
+Report the exact Pax source version, chosen adaptation form, preserve/rebuild/omit decisions, installed apps and state ownership, map and asset choices, validation results, editor and preview URLs, preview and playtest scope, and remaining human review. Call the result a structurally validated draft and explicitly state that runtime preview or playtesting remains unverified until each relevant check has actually passed. Never claim the Simulation is published unless the explicit live publishing workflow succeeded.
