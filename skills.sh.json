@@ -4,7 +4,7 @@
   "groupings": [
     {
       "title": "World Creation",
-      "description": "Design, validate, create, remix, and update WorldOS Simulation drafts.",
+      "description": "Design, validate, create, remix, update, cover, and explicitly publish owned WorldOS Simulations.",
       "skills": [
         "worldos-authoring"
       ]

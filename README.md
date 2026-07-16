@@ -41,7 +41,7 @@ The skill reads the live WorldOS authoring contract, discovers suitable apps, dr
 
 | Skill | Use it for |
 | --- | --- |
-| [`worldos-authoring`](skills/worldos-authoring/SKILL.md) | Design, validate, create, remix, and update unpublished WorldOS Simulation drafts. Start here. |
+| [`worldos-authoring`](skills/worldos-authoring/SKILL.md) | Design, validate, create, remix, update, cover, and explicitly reviewer-publish owned WorldOS Simulations. Start here. |
 | [`worldos-map-authoring`](skills/worldos-map-authoring/SKILL.md) | Build and review region maps with coherent geometry, factions, ownership, labels, and markers. |
 | [`worldos-widget-authoring`](skills/worldos-widget-authoring/SKILL.md) | Create and update private reusable WorldOS UGC widgets when no existing app fits. |
 | [`worldos-simulation-review`](skills/worldos-simulation-review/SKILL.md) | Inspect owned saves and turn history read-only to evaluate whether a Simulation behaves as designed. |
@@ -92,6 +92,7 @@ The open `skills` CLI supports Codex, Claude Code, Cursor, GitHub Copilot, Gemin
 - “Add a regional map with six connected districts, two factions, readable labels, and ownership that matches the characters.”
 - “Search the app catalog first. If nothing supports a relationship evidence board, create a private reusable widget.”
 - “Review my latest save and tell me whether time, inventory, relationships, and quest progress remain consistent. Do not change anything.”
+- “Upload this image as my draft's cover, validate it for publishing, and show me any remaining issues. Do not publish yet.”
 
 See [examples/prompts.md](examples/prompts.md) for more prompts and the expected workflow boundaries.
 
@@ -106,7 +107,7 @@ This separation keeps the workflow portable across agents and resilient as the W
 - Drafts are validated before any write.
 - Creates use idempotency keys; updates fetch the current resource and use its exact version.
 - Only resources owned by the authorized account and still unpublished can be edited.
-- Publishing remains a human review step in WorldOS.
+- Publishing is never implied. It requires an explicit request, clean publish validation, the latest world version, and an authorized reviewer account.
 - Save and turn access is read-only.
 - Skills never bypass the MCP through Supabase, SQL, private APIs, or repository internals.
 

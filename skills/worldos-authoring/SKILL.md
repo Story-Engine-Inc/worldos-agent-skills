@@ -1,6 +1,6 @@
 ---
 name: worldos-authoring
-description: Create, remix, inspect, validate, or update unpublished WorldOS Simulation drafts through the WorldOS MCP. Use when a user wants to design a new world, select and configure WorldOS apps, author characters and opening state, remix an existing world, or edit an owned draft without using a code repository or database access.
+description: Create, remix, inspect, validate, update, or explicitly publish an owned WorldOS Simulation through the WorldOS MCP. Use when a user wants to design a new world, select and configure WorldOS apps, author characters and opening state, remix an existing world, edit an owned draft, upload its cover, or publish it after review without using a code repository or database access.
 ---
 
 # WorldOS Authoring
@@ -24,7 +24,7 @@ Read the supporting material that matches the task:
 
 Read-only requests such as “review,” “audit,” “explain,” or “show me a proposal” do not authorize creation or updates. Stop after research, a candidate draft, or validation.
 
-Call a write tool only when the user clearly asks to create, import, remix, or modify a WorldOS resource. Publishing is never implied: MCP produces unpublished drafts for human review.
+Call a write tool only when the user clearly asks to create, import, remix, modify, upload to, or publish a WorldOS resource. Publishing is never implied by creation or editing. Call `publish_world` only when the user explicitly asks to publish the identified world in the current conversation and accepts that published worlds can no longer be edited through MCP.
 
 ## Choose the authoring branch
 
@@ -44,6 +44,30 @@ Compose the draft manually when fidelity and deliberate mechanics matter. Use `s
 `update_world_draft` replaces the accepted world copy and complete app-installation list atomically; it is not a partial patch. Do not attempt to change fields the update schema does not accept, such as a base remix relationship.
 
 If the version is stale, fetch the latest draft, reapply the intended change, revalidate, and submit with the new version. Never overwrite concurrent changes blindly.
+
+### Upload a world cover
+
+1. Fetch the owned draft and retain its exact `updatedAt`.
+2. Call `create_world_cover_upload` with the actual JPEG, PNG, or WebP content type and file size when known.
+3. Upload the raw file with HTTP `PUT` to the returned signed upload URL before it expires. Do not send the file bytes through an MCP JSON argument.
+4. Call `complete_world_cover_upload` with the returned path and the exact current world version.
+5. Fetch the world again and verify `config.coverImage` and the new `updatedAt`.
+
+The completion tool validates the file, normalizes it to WebP, moderates it, and attaches the public URL. A failed completion must not be described as uploaded or attached. Fetch a fresh version before retrying after a conflict.
+
+### Publish an owned world
+
+Publishing is a separate, high-impact step. It requires an MCP account with reviewer permission.
+
+1. Confirm that the user explicitly asked to publish this exact world. Creating, finishing, reviewing, or sharing a preview does not imply publishing.
+2. Fetch the latest owned world and retain its exact `updatedAt`.
+3. Ensure it has a stable HTTPS cover. Use the cover-upload workflow when necessary.
+4. Call `validate_world_for_publish`. Repair every error and discuss material warnings with the user.
+5. Remind the user that publication makes the world public and ends MCP editing for it.
+6. Call `publish_world` with the exact version and the literal confirmation required by the live schema.
+7. Report success only from the tool result and return its public world URL.
+
+If reviewer permission is missing, stop with the validation result. Do not bypass the refusal through the website, database, or another account. Unpublishing is outside this workflow.
 
 ### Remix
 
@@ -135,7 +159,7 @@ After a create, call `get_world_summary`. After an update, call `get_owned_world
 Report:
 
 - title, slug, and world ID;
-- unpublished visibility;
+- current visibility and whether it remains a draft or was explicitly published;
 - editor and preview URLs;
 - installed apps and which persistent facts each owns;
 - the opening action available to the player;
@@ -143,12 +167,12 @@ Report:
 - assets or copy that need human review;
 - any unsupported request that was intentionally left undone.
 
-Never say the Simulation is published. Human review and publishing happen in WorldOS.
+Never say the Simulation is published unless `publish_world` succeeded in this conversation. Otherwise state that it remains unpublished and requires review.
 
 ## Hard boundaries
 
 - Do not edit published resources or resources owned by another account.
-- Do not delete, transfer, or publish resources.
+- Do not delete, transfer, unpublish, or publish without the explicit reviewer workflow above.
 - Do not mutate, repair, rewind, rename, or delete saves.
 - Do not create built-in apps or modify shared/published apps.
 - Do not expose raw operations, state paths, prompts, model/provider details, or other system internals to players.
