@@ -54,7 +54,7 @@ Do not treat every Pax source as a life-path RPG. Identify what the player contr
 - a manager or builder optimizing a changing system;
 - a god-view or counterfactual player applying interventions and observing consequences.
 
-These are diagnostic examples, not templates. A source may combine forms or require another one. Select apps from the actual recurring decisions and durable consequences. Do not add personal inventory to a state strategy world, a map to a relationship chamber drama, or a background selector to a fixed-protagonist story unless it changes the core loop.
+These are diagnostic examples, not templates. A source may combine forms or require another one. Select apps from the actual recurring decisions and durable consequences. Do not add personal inventory to a state strategy world, a map to a relationship chamber drama, or a background selector to a fixed-protagonist story unless the core loop requires it.
 
 ## Core-loop conversion
 
@@ -179,7 +179,7 @@ Treat Pax geometry and imagery as reference material unless reuse is lawful and 
 - [ ] An update uses the latest complete draft and exact version.
 - [ ] The post-write draft is re-fetched or summarized successfully.
 - [ ] The returned preview was inspected when read-only page access was available; raw templates and internal window IDs are not visible.
-- [ ] Without a preview or fresh-save playtest, the handoff calls the result an unverified draft rather than finished.
+- [ ] Without a preview or fresh-save playtest, the handoff calls the result a structurally validated draft with runtime preview or playtesting still unverified, rather than finished.
 - [ ] Any fresh playtest save was started by the user rather than created or altered through MCP.
 - [ ] Any save review remains owner-scoped and read-only.
 - [ ] The handoff identifies remaining asset, copy, preview, and publishing review.

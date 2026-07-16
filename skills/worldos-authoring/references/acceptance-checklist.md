@@ -35,7 +35,7 @@ Use this checklist before creating or updating a world.
 - [ ] Setup fields live in `config.initFields`; no invented `setupFields` container exists.
 - [ ] Every required setup field has a usable default.
 - [ ] `player_name` and `player_persona` roles exist only when the experience needs them.
-- [ ] Every consequential option is compatible with the seeded opening, or the live contract explicitly represents its different initial facts.
+- [ ] Every consequential setup option is compatible with the seeded opening, or the live contract explicitly represents its different initial facts.
 - [ ] Every `{{...}}` token resolves from an init field or world character.
 
 ## Apps and specialists
@@ -61,5 +61,5 @@ Use this checklist before creating or updating a world.
 - [ ] The post-write world was fetched or summarized successfully.
 - [ ] Title, slug, visibility, apps, URLs, and latest version match the intended result.
 - [ ] The returned preview was inspected with default setup values when read-only page access was available; no raw template token or internal window ID is visible.
-- [ ] If no runtime preview or fresh-save playtest was possible, the handoff labels those checks unverified and does not call the Simulation finished.
+- [ ] If no runtime preview or fresh-save playtest was possible, the handoff calls the result a structurally validated draft, labels runtime preview or playtesting unverified, and does not call the Simulation finished.
 - [ ] The handoff says the world is unpublished and requires human review.
