@@ -67,7 +67,7 @@ Each region needs:
 
 Avoid self-intersecting, empty, microscopic, or wildly out-of-bounds paths. Do not create a country as one giant region for a strategic map that depends on territorial movement; use meaningful provinces, states, districts, or zones.
 
-For a large strategic map, set a region and geometry budget before drafting the final payload. Preserve fine regions where the player's decisions and active fronts need them, and merge less important territory into larger coherent areas. Follow the large-map workflow in [references/map-quality.md](references/map-quality.md); do not send thousands of decorative micro-regions merely because the source dataset contains them.
+For a large strategic map, set a region and geometry budget before drafting the final payload. Preserve fine-grained regions where the player's decisions and active fronts need them, and merge less important territory into larger coherent areas. Follow the large-map workflow in [references/map-quality.md](references/map-quality.md); do not send thousands of decorative micro-regions merely because the source dataset contains them.
 
 ## Define factions and characters
 

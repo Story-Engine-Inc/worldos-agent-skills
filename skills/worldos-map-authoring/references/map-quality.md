@@ -30,11 +30,11 @@ Do not carry every source province into a global or continent-scale Simulation. 
 
 Vary resolution by strategic importance:
 
-- keep player territory, active fronts, contested corridors, and major powers relatively fine;
+- keep player territory, active fronts, contested corridors, and major powers relatively fine-grained;
 - merge secondary powers, quiet interiors, remote territory, and large colonial holdings more aggressively;
 - keep an original region only when its separate identity changes movement, ownership, resources, diplomacy, or another player decision.
 
-When lawful source geometry is available, merge adjacent regions that share an initial owner and strategic role. Prefer real administrative groupings first. Split an oversized grouping into geographically coherent pieces, for example along its long axis, instead of creating arbitrary scattered clusters. For historical empires, a coherent territorial area may cross modern country boundaries when the historical owner and gameplay role are the same.
+When lawfully sourced geometry is available, merge adjacent regions that share an initial owner and strategic role. Prefer real administrative groupings first. Split an oversized grouping into geographically coherent pieces, for example along its long axis, instead of creating arbitrary scattered clusters. For historical empires, a coherent territorial area may cross modern country boundaries when the historical owner and gameplay role are the same.
 
 Use a topology-aware dissolve so shared interior borders disappear while the exterior boundary remains recognizable. Apply only light simplification after merging. Simplifying each polygon independently can create cracks, overlaps, and visibly mismatched borders.
 
