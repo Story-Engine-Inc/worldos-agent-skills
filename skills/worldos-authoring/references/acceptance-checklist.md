@@ -9,6 +9,8 @@ Use this checklist before creating or updating a world.
 - [ ] The target is owned by the authorized account and remains unpublished.
 - [ ] An update is based on the complete latest draft and exact `updatedAt`.
 - [ ] A create uses a stable idempotency key; identical retries reuse it.
+- [ ] External sources have structured URL, version, retrieval, hash, license, and notes when the live contract supports provenance.
+- [ ] A near-limit draft was inspected before writing; bounded patches were re-fetched after each exact-version update.
 
 ## Playability
 
@@ -64,6 +66,8 @@ Use this checklist before creating or updating a world.
 - [ ] For a new world or gameplay-affecting change, an isolated playtest was started when the live contract exposed it.
 - [ ] The playtest covered representative ordinary, quiet, difficult, time, and core-state consequences in proportion to the change.
 - [ ] Each expected narrative consequence appeared on the corresponding player-visible app surface and persisted into later turns.
+- [ ] Available player-visible assertions passed and the complete temporary playtest history was inspected.
+- [ ] Every uploaded cover or world asset completed against the intended target and exact world version, then appeared in the re-fetched draft.
 - [ ] The temporary playtest was deleted after review; real saves were never changed.
 - [ ] If no runtime preview or isolated/fresh-save playtest was possible, the handoff calls the result a structurally validated draft, labels runtime preview or playtesting as unverified, and does not call the Simulation finished.
 - [ ] Unless the explicit publishing workflow below succeeded, the handoff says the world is unpublished and requires human review.
