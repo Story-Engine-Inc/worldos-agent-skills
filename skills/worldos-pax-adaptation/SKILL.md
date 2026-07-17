@@ -7,7 +7,7 @@ description: Adapt a versioned Pax Historia preset, world link, export, prompt, 
 
 Turn a Pax Historia source into a playable WorldOS Simulation rather than a textual copy. Preserve the player fantasy and distinctive conflicts, then rebuild mechanics around WorldOS apps, explicit state ownership, active pacing, and reviewable unpublished drafts.
 
-Use only public WorldOS MCP capabilities for WorldOS reads and writes. Do not fall back to Supabase, SQL, private APIs, platform source code, or repository-specific scripts.
+Use only public WorldOS MCP capabilities for WorldOS reads and writes. Do not fall back to Supabase, SQL, private APIs, platform source code, or WorldOS application-repository scripts. Ordinary read-only source access and the bundled Pax snapshot helper are allowed only for source acquisition.
 
 ## Start with the live contract
 
@@ -20,7 +20,9 @@ Read-only requests such as “review,” “audit,” “explain,” or “show 
 
 ## Freeze and audit the source
 
-Record the exact Pax URL, preset identifier, version identifier, title, and source language. Treat an unversioned latest page as unstable. If the source cannot be read through the agent's available read-only browsing, ask the user for an export or pasted content instead of guessing.
+Record the exact Pax URL, preset identifier, version identifier, title, and source language. Treat an unversioned latest page as unstable. Follow the version-specific public snapshot workflow in [references/pax-adaptation.md](references/pax-adaptation.md) when the preset is publicly readable: prefer the exact Firestore document used by the Pax frontend over browser DOM extraction, pin the raw response, and record both raw and canonical JSON hashes. Use Pax search only for discovery or summary cross-checks, not as the complete source.
+
+Treat these public web endpoints as an undocumented frontend data layer, not a supported Pax developer API. Never add credentials, enumerate unrelated documents, or bypass an access denial. Public readability does not grant permission to republish protected prose, images, flags, or geometry. If the exact version cannot be read through ordinary read-only access, ask the user for an export or pasted content instead of guessing.
 
 Classify source material before choosing apps:
 
