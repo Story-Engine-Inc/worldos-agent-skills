@@ -33,10 +33,10 @@ Compose a `map` installation config with a coherent coordinate system and stable
 1. Fetch the complete map with `get_world_map`.
 2. Fetch the complete world with `get_owned_world`.
 3. Preserve every untouched map and world field.
-4. Replace the map installation config inside the complete candidate world draft.
-5. Validate the entire world and update it with the exact world version.
+4. For a bounded change or large import, use `patch_world_map` when the live contract exposes it, in batches no larger than the live schema permits. Otherwise replace the map installation config inside the complete candidate world draft.
+5. Validate the complete merged map and world, update with the exact world version, and re-fetch after every successful batch.
 
-There is no separate map write shortcut: map writes go through validated world creation or update.
+A live map patch is not an unsafe partial write: it must merge into the current map, validate the complete result, and save atomically. Create one valid initial map before applying batches. Never leave unresolved owners or references for a later batch.
 
 ### Remix
 
@@ -95,7 +95,7 @@ Keep region attributes few and actionable. Examples include control, unrest, sup
 
 ## Assets and attribution
 
-The WorldOS MCP uploads world covers only; it does not upload map backgrounds or faction images. External map assets must be legally reusable, stable, publicly reachable, and attributed when required. Do not scrape protected maps, use session-bound URLs, or download promotional art to imitate an existing product.
+When the live WorldOS contract exposes target-bound world-asset uploads, use them for lawful map backgrounds and faction flags: create the signed upload for the exact target, upload the raw image, complete with the exact current world version and matching target, then re-fetch the map. Otherwise external map assets must be legally reusable, stable, publicly reachable, and attributed when required. Do not scrape protected maps, use session-bound URLs, or download promotional art to imitate an existing product.
 
 Region geometry may be derived from lawful public-domain or appropriately licensed geographic sources. Record relevant attribution in `backgroundAttribution` or the closest current contract field.
 
@@ -112,7 +112,7 @@ Before the full draft write:
 5. Check that region count and path detail are proportionate to actual decisions.
 6. Check label density and positions.
 7. Check map-specific validation from `get_world_map` when available.
-8. Call `validate_world_draft` on the complete world.
+8. Inspect payload size before a large write when the live tool exists, then call `validate_world_draft` on the complete world.
 9. Repair every map error and reassess each warning.
 
 After a write, fetch the world and map again. Verify region, faction, action, and marker counts as well as the new world version and preview URL.

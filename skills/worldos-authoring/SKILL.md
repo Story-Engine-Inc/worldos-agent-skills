@@ -38,10 +38,10 @@ Compose the draft manually when fidelity and deliberate mechanics matter. Use `s
 2. Call `get_owned_world` and retain its complete draft and exact `updatedAt`.
 3. Modify only the intended fields while preserving every untouched world field and app installation config.
 4. Validate the complete candidate draft.
-5. Call `update_world_draft` with the exact `updatedAt` as `expectedUpdatedAt`.
+5. Call `patch_world_draft` for bounded world-copy or app-install changes when the live contract exposes it; otherwise call `update_world_draft` with the complete candidate. Pass the exact `updatedAt` as `expectedUpdatedAt` either way.
 6. Fetch the world again and verify the new version.
 
-`update_world_draft` replaces the accepted world copy and complete app-installation list atomically; it is not a partial patch. Do not attempt to change fields the update schema does not accept, such as a base remix relationship.
+`update_world_draft` replaces the accepted world copy and complete app-installation list atomically. A live patch tool merges a bounded section but still validates and saves the complete result atomically. Do not attempt to change fields the selected schema does not accept, such as a base remix relationship.
 
 If the version is stale, fetch the latest draft, reapply the intended change, revalidate, and submit with the new version. Never overwrite concurrent changes blindly.
 
@@ -54,6 +54,10 @@ If the version is stale, fetch the latest draft, reapply the intended change, re
 5. Fetch the world again and verify `config.coverImage` and the new `updatedAt`.
 
 The completion tool validates the file, normalizes it to WebP, moderates it, and attaches the public URL. A failed completion must not be described as uploaded or attached. Fetch a fresh version before retrying after a conflict.
+
+### Upload other world assets
+
+When exposed by the live contract, use the target-bound world-asset upload for character avatars, faction flags, map backgrounds, and installed-app backgrounds. Fetch the exact world version, create an upload for the intended target, upload the raw image to the signed URL, and complete with the same target and version. Re-fetch and verify the destination field. Never reuse a staged path for another target or describe an uncompleted upload as attached.
 
 ### Publish an owned world
 
@@ -123,6 +127,8 @@ Examples include:
 
 Keep prompts lean. Do not repeat app data structures or tool internals in the world prompt; the installed app contract already supplies that information to the runtime.
 
+Record external source identity, exact URL and version, retrieval time, hashes, license, and concise notes in the live structured provenance field when one exists. Public readability does not establish permission to copy source prose or assets.
+
 ## Characters and player setup
 
 - Give every character a stable, unique ID.
@@ -145,6 +151,8 @@ The canonical language is not necessarily English. Treat each locale, including 
 
 Call `validate_world_draft` on the complete candidate draft. Repair every error. Review every warning and either fix it or record why it is acceptable; do not silently ignore warnings.
 
+For a large candidate, call the live payload-inspection tool before strict validation. Use bounded exact-version draft patches and validated map batches when supported instead of repeatedly resending a near-limit payload. Re-fetch after each successful batch.
+
 Pay particular attention to:
 
 - known and installable apps;
@@ -166,8 +174,8 @@ After a create, call `get_world_summary`. After an update, call `get_owned_world
 For a new world or a change that affects opening state, prompts, apps, maps, pacing, or progression, use the live isolated-playtest tools when available:
 
 1. Call `start_world_playtest` with default or deliberately chosen setup values and inspect the player-visible opening.
-2. Call `playtest_world_turn` with the exact session version for a bounded sequence of natural-language actions. Check that prose and the expected app surfaces change together.
-3. Use `get_world_playtest` to recover the latest version after a lost response or version conflict.
+2. Call `playtest_world_turn` with the exact session version for a bounded sequence of natural-language actions. Attach player-visible assertions when the live schema supports them and check detailed changes rather than surface names alone.
+3. Use `get_world_playtest` to recover the latest version after a lost response or version conflict. Use the temporary history tool, when available, to review all completed changes and assertion results.
 4. If the draft changes, discard the stale session and start again; playtests are bound to the world version they began from.
 5. Call `delete_world_playtest` after review. Do not leave temporary sessions merely to preserve evidence.
 

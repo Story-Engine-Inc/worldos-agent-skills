@@ -2,11 +2,66 @@
 
 Use this guide after reading the live WorldOS authoring contract. It provides adaptation heuristics, not fixed app schemas.
 
+## Capture an exact public source snapshot
+
+Do not treat rendered browser text as the authoritative source when an exact public version is available. Pax currently exposes the frontend's versioned Firestore document at:
+
+```text
+https://firestore.googleapis.com/v1/projects/pax-historia-dev/databases/(default)/documents/simplePresets/<preset-id>/versions/<version-id>
+```
+
+This is an undocumented public frontend data layer, not an officially supported Pax developer API. Its availability and schema may change. Fetch only a preset and version already supplied by the user or present in the public preset URL. Do not use credentials, enumerate unknown documents, or work around HTTP 401 or 403 responses.
+
+Prefer the bundled standard-library helper because it verifies the returned document identity, preserves the raw response, computes reproducible hashes, and refuses to overwrite a different snapshot:
+
+```bash
+python3 scripts/fetch-pax-version.py <preset-id> <version-id> pax-version-<version-id>.json
+```
+
+Decode the Firestore typed values and create a coverage worksheet immediately after fetching:
+
+```bash
+python3 scripts/decode-pax-version.py pax-version-<version-id>.json \
+  --normalized pax-version-<version-id>.decoded.json \
+  --audit pax-version-<version-id>.coverage.json
+```
+
+The worksheet records paths, labels, sizes, counts, and hashes without embedding the source prose. Complete every row with one disposition. A preserved or rebuilt row needs one WorldOS state owner and a concrete implementation; an omitted row needs a rationale; a verification row needs a plan or result.
+
+When the current working directory is not this skill directory, invoke the same script by its resolved installed-skill path. A direct one-off request is also possible:
+
+```bash
+curl --fail --location --compressed \
+  'https://firestore.googleapis.com/v1/projects/pax-historia-dev/databases/(default)/documents/simplePresets/<preset-id>/versions/<version-id>' \
+  -o pax-version-<version-id>.json
+```
+
+After retrieval:
+
+1. Cross-check the preset and version from the user URL, the Firestore document `name`, and the document's internal version or preset metadata when present. Stop on any mismatch.
+2. Preserve the raw response as the source snapshot. Record its byte count and SHA-256. Also record a canonical SHA-256 calculated after parsing JSON and sorting object keys, because equivalent Firestore responses may serialize map keys in a different order.
+3. Decode Firestore's typed value wrappers instead of assuming `fields` contains ordinary JSON values.
+4. Inventory `rulesText`, `startingTimelineText`, `prompts` including Advisor behavior, `regionData`, `baseMap`, recommended entities, decisions, and version or publication metadata when present. Do not assume every version has every field.
+5. Use `https://www.paxhistoria.co/api/presets/search` only for discovery and summary cross-checks. It is not a replacement for the versioned document. Use the public preset page for identity, visible version history, and visual review rather than DOM-based full extraction.
+6. If the document is unavailable, denied, malformed, or inconsistent, stop and request a user export or pasted source. Do not silently fall back to an unversioned page.
+
+Before validation or writing, run the coverage and content-budget gate against the candidate draft:
+
+```bash
+python3 scripts/check-pax-adaptation.py pax-version-<version-id>.coverage.json \
+  --draft worldos-draft.json
+```
+
+Repair every coverage error. Distill copy that exceeds the reported budgets instead of moving the same lore between prompts. Warnings about near-limit payloads or duplicated long prompt paragraphs require an explicit review.
+
+A public response establishes technical readability, not reuse rights. Summarize and transform source prose. Check provenance and permission before copying images, flags, geometry, or other protected assets into WorldOS.
+
 ## Source audit worksheet
 
 Record:
 
 - exact preset URL, preset identifier, version identifier, title, and source language;
+- source snapshot retrieval time, byte count, raw SHA-256, canonical SHA-256, and identity cross-check result;
 - player scale: individual, household, organization, faction, or state;
 - opening date, place, historical anchor, and known event chain;
 - characters, factions, relationships, and Advisor guidance;
@@ -147,6 +202,8 @@ Treat Pax geometry and imagery as reference material unless reuse is lawful and 
 
 - [ ] The exact Pax source and version are recorded.
 - [ ] Preserve, rebuild, omit, and verify decisions are explicit.
+- [ ] The generated coverage worksheet has no undecided row and passes the bundled checker against the candidate draft.
+- [ ] Prompt, opening, and total payload budgets pass without hiding source prose in another injected field.
 - [ ] The player fantasy, authority, opening decision, and core loop are clear.
 - [ ] The adaptation form comes from the source rather than a default RPG or strategy template.
 - [ ] The user explicitly authorized any intended write.
@@ -184,12 +241,15 @@ Treat Pax geometry and imagery as reference material unless reuse is lawful and 
 ### Validation and handoff
 
 - [ ] The complete draft passes validation with every warning assessed.
+- [ ] The exact source URL, version, retrieval time, hashes, and rights notes are stored in live structured provenance when supported.
+- [ ] Near-limit payloads were inspected before writing; large world or map sections used exact-version bounded patches when supported.
 - [ ] A create uses a stable source-versioned idempotency key.
 - [ ] An update uses the latest complete draft and exact version.
 - [ ] The post-write draft is re-fetched or summarized successfully.
 - [ ] The returned preview was inspected when read-only page access was available; raw templates and internal window IDs are not visible.
 - [ ] When exposed by the live contract, the isolated playtest completed at least five successful turn calls: ordinary action, quiet action, second quiet action with external pressure, ambitious failure/cost, and a persistence-confirming follow-up.
 - [ ] Applicable relationship and map checks used their real chat and map interaction surfaces, with additional turns when necessary.
+- [ ] Available player-visible assertions passed and the complete temporary turn history was inspected before deletion.
 - [ ] Expected consequences changed the correct player-visible surfaces and remained consistent in later turns.
 - [ ] The temporary playtest session was deleted after review.
 - [ ] Without a preview or isolated/fresh-save playtest, the handoff calls the result a structurally validated draft with runtime preview or playtesting still unverified, rather than finished.
