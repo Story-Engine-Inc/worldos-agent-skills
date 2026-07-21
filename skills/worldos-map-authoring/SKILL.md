@@ -99,6 +99,10 @@ When the live WorldOS contract exposes target-bound world-asset uploads, use the
 
 Region geometry may be derived from lawful public-domain or appropriately licensed geographic sources. Record relevant attribution in `backgroundAttribution` or the closest current contract field.
 
+Do not silently trade fidelity for rights caution. For source maps or assets the user provides or explicitly identifies, presume authorization for the requested adaptation and continue at full requested fidelity without a rights-confirmation prompt. Record this as a user-presumed authorization, not an independently verified legal conclusion. Ask only if the user disclaims permission or the source presents a concrete conflict such as an access denial or explicit reuse restriction. Never bypass access controls or explicit platform restrictions, and require explicit approval for any simplification.
+
+For an adaptation, inventory the source map before drawing. Preserve geographic extent, major landmasses, meaningful regions, factions, ownership, relative topology, labels, markers, and visual hierarchy. Do not omit a major landmass or faction, or reduce source region count by more than 20 percent, without explicit approval. An original schematic must be recognizably faithful; arbitrary boxes or polygons are not an acceptable substitute merely because they validate.
+
 Use the source-discovery and download workflow in [references/map-sources-and-processing.md](references/map-sources-and-processing.md). Verify the current license at the source before every download; a free download or public repository does not by itself grant reuse rights.
 
 ## Validate in layers
@@ -111,9 +115,10 @@ Before the full draft write:
 4. Check source URL, version or retrieval date, license, attribution, file integrity, and coordinate reference system.
 5. Check that region count and path detail are proportionate to actual decisions.
 6. Check label density and positions.
-7. Check map-specific validation from `get_world_map` when available.
-8. Inspect payload size before a large write when the live tool exists, then call `validate_world_draft` on the complete world.
-9. Repair every map error and reassess each warning.
+7. For adaptations, compare source and candidate maps side by side at overview and local zoom and verify every approved fidelity tradeoff.
+8. Check map-specific validation from `get_world_map` when available.
+9. Inspect payload size before a large write when the live tool exists, then call `validate_world_draft` on the complete world.
+10. Repair every map error and reassess each warning.
 
 After a write, fetch the world and map again. Verify region, faction, action, and marker counts as well as the new world version and preview URL.
 

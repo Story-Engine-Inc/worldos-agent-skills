@@ -24,6 +24,8 @@ Record the exact Pax URL, preset identifier, version identifier, title, and sour
 
 Treat these public web endpoints as an undocumented frontend data layer, not a supported Pax developer API. Never add credentials, enumerate unrelated documents, or bypass an access denial. Public readability does not grant permission to republish protected prose, images, flags, or geometry. If the exact version cannot be read through ordinary read-only access, ask the user for an export or pasted content instead of guessing.
 
+Rights uncertainty must never become a silent fidelity downgrade. For source maps or assets the user provides or explicitly identifies, use a workflow presumption that the user is authorized to use them for the requested adaptation. Continue at full requested fidelity without a rights-confirmation prompt, and record that the authorization is user-presumed rather than independently verified. Ask only when the user disclaims permission or the source presents a concrete conflict such as an access denial or explicit reuse restriction. Never bypass access controls, the live WorldOS contract, or explicit platform restrictions, and require approval before any fidelity-reducing substitute.
+
 When the live WorldOS contract exposes structured source provenance, store the Pax source type, exact URL, preset and version identifiers, retrieval time, hashes, license status, and concise notes in that field. Do not hide provenance only in the handoff message.
 
 Classify source material before choosing apps:
@@ -77,11 +79,14 @@ Treat extraordinary declarations as attempts, not facts. For difficult long-term
 ## Choose the map branch deliberately
 
 - Before choosing a branch, record whether the Pax source includes a map and whether location, travel, territorial ownership, regional state, or map actions affect the core loop.
+- Inventory the source map before designing a replacement: geographic extent, region count, major landmasses, factions, ownership, markers, topology, background layers, visual hierarchy, and referenced geometry or tile documents. Resolve ordinary public dependencies or ask the user for an export; do not infer geometry from names alone.
 - If the source includes a gameplay-relevant map or the adapted core loop depends on any of those geographic facts, use the `worldos-map-authoring` workflow and build or remix a validated map. This is a required adaptation branch, not optional polish.
 - Use no map only when geography is genuinely decorative or interchangeable. State that conclusion explicitly in the preflight and handoff.
 - Use a new region map only when lawful geometry, coherent ownership, and stable references can pass validation.
 - Use remix when the live contract protects a source map or requires remixing, including current tile-map restrictions.
-- Treat Pax geometry and imagery as reference material unless reuse is lawful and technically stable. Copyright or asset instability may block copying the source art, but does not by itself justify omitting a gameplay-required map: create an original schematic region map or use another lawful source when the live contract permits it.
+- Treat Pax geometry and imagery as reference material unless reuse is covered by the user-presumed authorization or another valid basis recorded in provenance. A concrete source restriction or asset instability may block copying source pixels, but does not justify an arbitrary low-detail map. Create a faithful original or lawfully sourced replacement that preserves geographic extent, major landmasses, meaningful regions, factions, and topology.
+- Do not omit a major landmass or source faction, or reduce the source region count by more than 20 percent, without the user's explicit approval of that exact tradeoff. Address payload pressure through bounded map patches, topology-aware path simplification, and reduced decorative detail before removing playable geography.
+- Compare source and candidate maps side by side at overview and local zoom. A structurally valid map is not complete until the user-visible geography and visual hierarchy pass this fidelity review.
 - Use east-west wrapping only for a genuinely global map; disable it for bounded regional maps to avoid repeated horizontal worlds.
 
 For any region map, use the `worldos-map-authoring` workflow when available. Keep territorial owners as factions; represent villages, clans, organizations, and points of interest as characters or markers when they are not sovereign territory.
