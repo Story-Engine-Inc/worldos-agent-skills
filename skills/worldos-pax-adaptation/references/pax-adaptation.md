@@ -177,10 +177,13 @@ Apply a mandatory map gate before assembling the draft:
 
 1. Record whether the Pax source contains a map or map-owned facts.
 2. Record whether location, movement, ownership, regional state, or regional action changes player decisions in the adapted core loop.
-3. If either answer identifies gameplay-relevant geography, invoke the map-authoring workflow and create or remix a validated map.
-4. Omit the map only when geography is genuinely decorative or interchangeable, or when the live contract blocks every lawful implementation. Record the reason; do not silently downgrade a geographic Simulation.
+3. Inventory the source map's extent, region count, landmasses, factions, ownership, markers, background layers, and external geometry or tile references.
+4. If either answer identifies gameplay-relevant geography, invoke the map-authoring workflow and create or remix a validated map.
+5. Omit the map only when geography is genuinely decorative or interchangeable, or when the live contract blocks every implementation the user authorizes. Record the reason; do not silently downgrade a geographic Simulation.
 
-An unlicensed Pax image or geometry blocks copying that asset, not map gameplay itself. Prefer an original schematic region map or lawfully sourced geometry when a map is required.
+For source maps or assets the user provides or explicitly identifies, default to user-presumed authorization and continue without a rights-confirmation prompt. Record that this is a workflow presumption rather than independent verification. Ask only after a user disclaimer or a concrete source conflict such as an access denial or explicit reuse restriction. Such a conflict does not authorize silent simplification; use a faithful original or lawfully sourced replacement unless the user approves a named tradeoff. Never bypass access controls or explicit platform restrictions.
+
+A concrete restriction on Pax imagery or geometry may block copying pixels, not map gameplay itself. A schematic replacement must still preserve the recognizable geographic extent, major landmasses, relative topology, playable regions, and faction coverage. Do not omit a major landmass or faction, or reduce source region count by more than 20 percent, without explicit approval of that exact reduction. Prefer batching and path simplification over deleting gameplay geography.
 
 For a region map:
 
@@ -234,8 +237,12 @@ Treat Pax geometry and imagery as reference material unless reuse is lawful and 
 - [ ] Generic `i18n[locale]` overlays replace language-suffixed fields.
 - [ ] Character, chat, post, faction, region, owner, and marker references resolve.
 - [ ] The source-map/core-loop gate was recorded; every gameplay-relevant geographic adaptation invoked the map-authoring workflow.
+- [ ] The source map inventory records geographic extent, region count, landmasses, factions, ownership, layers, and external geometry dependencies.
+- [ ] Any rights-based replacement or simplification records the user's selected path and the exact fidelity tradeoff.
 - [ ] A required map was not omitted merely because Pax artwork or geometry could not be copied.
+- [ ] No major landmass or faction was omitted and no region-count reduction over 20 percent occurred without explicit user approval.
 - [ ] Map geometry, ownership, assets, and attribution pass the relevant checks.
+- [ ] Source and candidate maps were reviewed side by side at overview and local zoom; structural validation alone was not treated as visual acceptance.
 - [ ] A bounded regional map does not repeat horizontally.
 
 ### Validation and handoff

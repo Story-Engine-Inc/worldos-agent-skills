@@ -11,6 +11,14 @@ Choose regions at the scale where player decisions happen:
 
 Do not mix radically different resolutions without a gameplay reason.
 
+## Adaptation fidelity
+
+Before replacing an existing source map, inventory its geographic extent, region count, major landmasses, factions, ownership, labels, markers, background layers, and external geometry dependencies. Compare that inventory with the candidate rather than judging the candidate in isolation.
+
+Keep every major landmass, source faction, and gameplay-relevant corridor unless the user explicitly approves its omission. A reduction of more than 20 percent in source region count requires approval of the exact tradeoff. Reduce path precision and decorative detail before reducing playable coverage. Original geometry may change outlines and styling, but it must preserve recognizable relative topology and visual hierarchy; arbitrary boxes are not a faithful schematic.
+
+Review source and candidate screenshots side by side at the full-map view and at representative local zoom levels. Structural validity, readable labels, and successful rendering do not establish adaptation fidelity.
+
 ## Geometry checks
 
 For each region:
