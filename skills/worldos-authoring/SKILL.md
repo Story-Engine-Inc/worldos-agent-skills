@@ -1,6 +1,6 @@
 ---
 name: worldos-authoring
-description: Create, remix, inspect, validate, update, or explicitly publish an owned WorldOS Simulation through the WorldOS MCP. Use when a user wants to design a new world, select and configure WorldOS apps, author characters and opening state, remix an existing world, edit an owned draft, upload its cover, or publish it after review without using a code repository or database access.
+description: Create, remix, inspect, validate, update, or explicitly publish an owned WorldOS Simulation through the WorldOS MCP. Use when a user wants to design a new world, select and configure WorldOS apps, author characters and opening state, remix an existing world, edit an owned draft or published world, upload its cover, or publish it after review without using a code repository or database access.
 ---
 
 # WorldOS Authoring
@@ -9,7 +9,7 @@ Build a playable WorldOS Simulation through the public WorldOS MCP. Use only MCP
 
 ## Start with the live contract
 
-1. Call `get_authoring_guide` before designing or editing a draft.
+1. Call `get_authoring_guide` before designing or editing a world.
 2. Treat the live guide, current tool schemas, and validation results as authoritative when they differ from this skill.
 3. If the WorldOS MCP is unavailable or unauthorized, stop and explain how to connect or reauthorize it. Never request an access token in chat.
 
@@ -24,7 +24,9 @@ Read the supporting material that matches the task:
 
 Read-only requests such as “review,” “audit,” “explain,” or “show me a proposal” do not authorize creation or updates. Stop after research, a candidate draft, or validation.
 
-Call a write tool only when the user clearly asks to create, import, remix, modify, upload to, or publish a WorldOS resource. Publishing is never implied by creation or editing. Call `publish_world` only when the user explicitly asks to publish the identified world in the current conversation and accepts that published worlds can no longer be edited through MCP.
+Call a write tool only when the user clearly asks to create, import, remix, modify, upload to, or publish a WorldOS resource. Publishing is never implied by creation or editing. Call `publish_world` only when the user explicitly asks to publish the identified world in the current conversation.
+
+An edit to a published world is applied in place and remains public. Make sure the user's write request identifies the intended live world and change; do not reinterpret a review request as permission to modify it. Public reads may briefly show the prior version while caches refresh.
 
 ## Choose the authoring branch
 
@@ -32,22 +34,22 @@ Call a write tool only when the user clearly asks to create, import, remix, modi
 
 Compose the draft manually when fidelity and deliberate mechanics matter. Use `start_world_generation` only when the user accepts an AI-generated starting point, then poll `get_world_generation` until completion or failure. Treat generated output as an editable draft, not an approved result.
 
-### Update an owned draft
+### Update an owned world
 
 1. Use `list_owned_worlds` if the user has not supplied an unambiguous world ID.
-2. Call `get_owned_world` and retain its complete draft and exact `updatedAt`.
+2. Call `get_owned_world` and retain its complete world payload, visibility, and exact `updatedAt`.
 3. Modify only the intended fields while preserving every untouched world field and app installation config.
 4. Validate the complete candidate draft.
 5. Call `patch_world_draft` for bounded world-copy or app-install changes when the live contract exposes it; otherwise call `update_world_draft` with the complete candidate. Pass the exact `updatedAt` as `expectedUpdatedAt` either way.
 6. Fetch the world again and verify the new version.
 
-`update_world_draft` replaces the accepted world copy and complete app-installation list atomically. A live patch tool merges a bounded section but still validates and saves the complete result atomically. Do not attempt to change fields the selected schema does not accept, such as a base remix relationship.
+`update_world_draft` replaces the accepted world copy and complete app-installation list atomically. A live patch tool merges a bounded section but still validates and saves the complete result atomically. Neither tool changes the world's visibility, so a published world remains public. Do not attempt to change fields the selected schema does not accept, such as a base remix relationship.
 
-If the version is stale, fetch the latest draft, reapply the intended change, revalidate, and submit with the new version. Never overwrite concurrent changes blindly.
+If the version is stale, fetch the latest world, reapply the intended change, revalidate, and submit with the new version. Never overwrite concurrent changes blindly.
 
 ### Upload a world cover
 
-1. Fetch the owned draft and retain its exact `updatedAt`.
+1. Fetch the owned world and retain its exact `updatedAt`.
 2. Call `create_world_cover_upload` with the actual JPEG, PNG, or WebP content type and file size when known.
 3. Upload the raw file with HTTP `PUT` to the returned signed upload URL before it expires. Do not send the file bytes through an MCP JSON argument.
 4. Call `complete_world_cover_upload` with the returned path and the exact current world version.
@@ -67,7 +69,7 @@ Publishing is a separate, high-impact step. It requires an MCP account with revi
 2. Fetch the latest owned world and retain its exact `updatedAt`.
 3. Ensure it has a stable HTTPS cover. Use the cover-upload workflow when necessary.
 4. Call `validate_world_for_publish`. Repair every error and discuss material warnings with the user.
-5. Remind the user that publication makes the world public and ends MCP editing for it.
+5. Remind the user that publication makes the world public. It remains owner-editable through validated, exact-versioned MCP writes.
 6. Call `publish_world` with the exact version and the literal confirmation required by the live schema.
 7. Report success only from the tool result and return its public world URL.
 
@@ -169,14 +171,14 @@ Before writing, audit every `{{...}}` token against `config.initFields` and the 
 
 For a create, generate a stable idempotency key of 8–200 characters. Reuse the same key only when retrying the exact same intent and identical draft. Change the revision when draft content changes materially.
 
-After a create, call `get_world_summary`. After an update, call `get_owned_world`. Verify title, slug, visibility, installed apps, URLs, and the latest version. A structurally valid draft is not a completed playtest.
+After a create, call `get_world_summary`. After an update, call `get_owned_world`. Verify title, slug, visibility, installed apps, URLs, and the latest version. A structurally valid world is not a completed playtest.
 
 For a new world or a change that affects opening state, prompts, apps, maps, pacing, or progression, use the live isolated-playtest tools when available:
 
 1. Call `start_world_playtest` with default or deliberately chosen setup values and inspect the player-visible opening.
 2. Call `playtest_world_turn` with the exact session version for a bounded sequence of natural-language actions. Attach player-visible assertions when the live schema supports them and check detailed changes rather than surface names alone.
 3. Use `get_world_playtest` to recover the latest version after a lost response or version conflict. Use the temporary history tool, when available, to review all completed changes and assertion results.
-4. If the draft changes, discard the stale session and start again; playtests are bound to the world version they began from.
+4. If the world changes, discard the stale session and start again; playtests are bound to the world version they began from.
 5. Call `delete_world_playtest` after review. Do not leave temporary sessions merely to preserve evidence.
 
 Test proportionately. A new gameplay draft normally needs an ordinary action, quiet or waiting behavior, a difficult or failed attempt, time progression, and one core resource, relationship, objective, or map consequence. A copy-only metadata edit does not require replaying the full loop. Temporary playtests never authorize changes to real saves.
@@ -186,7 +188,7 @@ Test proportionately. A new gameplay draft normally needs an ordinary action, qu
 Report:
 
 - title, slug, and world ID;
-- current visibility and whether it remains a draft or was explicitly published;
+- current visibility and whether a write changed an unpublished draft or updated a live published world;
 - editor and preview URLs;
 - installed apps and which persistent facts each owns;
 - the opening action available to the player;
@@ -195,11 +197,11 @@ Report:
 - assets or copy that need human review;
 - any unsupported request that was intentionally left undone.
 
-Never say the Simulation is published unless `publish_world` succeeded in this conversation. Otherwise state that it remains unpublished and requires review.
+Never claim that this conversation published a Simulation unless `publish_world` succeeded. For a world that was already public, report the fetched `public` visibility and state that the edit preserved it; for an unpublished world, state that it still requires review and explicit publication.
 
 ## Hard boundaries
 
-- Do not edit published resources or resources owned by another account.
+- Do not edit resources owned by another account or blocked resources.
 - Do not delete, transfer, unpublish, or publish without the explicit reviewer workflow above.
 - Do not mutate, repair, rewind, rename, or delete real saves. Use only live isolated-playtest tools for temporary authoring sessions.
 - Do not create built-in apps or modify shared/published apps.

@@ -1,17 +1,17 @@
 ---
 name: worldos-map-authoring
-description: Author, inspect, validate, or update a WorldOS region map through the WorldOS MCP, including sourcing and processing lawful external geometry. Use when a Simulation needs geographic regions, factions, territorial ownership, country labels, markers, regional actions, an open geographic dataset, or a historical or strategic map; also use when reviewing an existing owned draft map.
+description: Author, inspect, validate, or update a WorldOS region map through the WorldOS MCP, including sourcing and processing lawful external geometry. Use when a Simulation needs geographic regions, factions, territorial ownership, country labels, markers, regional actions, an open geographic dataset, or a historical or strategic map; also use when reviewing an existing owned draft or published map.
 ---
 
 # WorldOS Map Authoring
 
-Build a readable and internally consistent region map as part of an unpublished WorldOS world draft. Do not modify a platform map implementation, database row, or repository asset directly.
+Build a readable and internally consistent region map in an owned WorldOS draft or published world. Published-map edits are applied in place and remain public. Do not modify a platform map implementation, database row, or repository asset directly.
 
 ## Confirm the live map contract
 
 1. Call `get_authoring_guide` and obey its current distinction between region maps and tile maps.
 2. Call `search_apps` for the map capability and read `get_app_guide` for the selected map app.
-3. For an existing owned draft, call `get_world_map` before editing and inspect its returned validation result.
+3. For an existing owned world, call `get_world_map` before editing and inspect its returned validation result.
 4. Treat live schemas and validation paths as authoritative over this skill.
 
 At the current contract, region maps may be authored from scratch with strict geometry and reference validation, while tile maps require remixing. If the live guide changes, follow it.
