@@ -39,7 +39,7 @@ The skill reads the live WorldOS authoring contract, discovers suitable apps, dr
 - Alternate-history and grand-strategy Simulations like [Pax Historia](https://worldos.cc/pax-historia), where players lead nations, negotiate, wage war, and reshape history on living maps.
 - Remixable worlds with characters, chats, stats, inventory, quests, time, social feeds, calendars, email, maps, and other WorldOS apps.
 - Region maps with coherent geometry, factions, territorial ownership, labels, and markers.
-- Private reusable widgets when the existing WorldOS app catalog does not fit.
+- Public reusable widgets when the existing WorldOS app catalog does not fit.
 - Controlled real-save regression runs through the normal player, billing, counter, and statistics path.
 - Read-only playtest reviews covering pacing, persistence, character behavior, and cross-app consistency.
 
@@ -51,7 +51,7 @@ The skill reads the live WorldOS authoring contract, discovers suitable apps, dr
 | [`worldos-war-authoring`](skills/worldos-war-authoring/SKILL.md) | Build polity-scale grand-strategy war Simulations from the live canonical rules, eligible source prompts, strategic maps, and isolated playtests. |
 | [`worldos-pax-adaptation`](skills/worldos-pax-adaptation/SKILL.md) | Adapt versioned Pax Historia worlds into playable unpublished WorldOS Simulations with explicit persistent state. |
 | [`worldos-map-authoring`](skills/worldos-map-authoring/SKILL.md) | Build, remix, and review region maps or tile maps with coherent geometry, terrain, ownership, labels, and markers. |
-| [`worldos-widget-authoring`](skills/worldos-widget-authoring/SKILL.md) | Create and update private reusable WorldOS UGC widgets when no existing app fits. |
+| [`worldos-widget-authoring`](skills/worldos-widget-authoring/SKILL.md) | Create and update public reusable WorldOS UGC widgets when no existing app fits. |
 | [`worldos-simulation-play`](skills/worldos-simulation-play/SKILL.md) | Create a formal owned save and run bounded real turns through the normal player path. |
 | [`worldos-simulation-review`](skills/worldos-simulation-review/SKILL.md) | Inspect owned saves and turn history read-only to evaluate whether a Simulation behaves as designed. |
 
@@ -99,7 +99,7 @@ The open `skills` CLI supports Codex, Claude Code, Cursor, GitHub Copilot, Gemin
 - “Create a bilingual cyberpunk detective world with chats, email, inventory, time, and a case board. Validate it, but do not publish it.”
 - “Remix my existing world into a Renaissance banking rivalry while preserving its installed app structure.”
 - “Add a regional map with six connected districts, two factions, readable labels, and ownership that matches the characters.”
-- “Search the app catalog first. If nothing supports a relationship evidence board, create a private reusable widget.”
+- “Search the app catalog first. If nothing supports a relationship evidence board, create a public reusable widget.”
 - “Create a fresh real save in my Hogwarts Simulation and use at most three turns to verify that character statistics update and persist. I understand this may spend Zaps and affect normal statistics.”
 - “Review my latest save and tell me whether time, inventory, relationships, and quest progress remain consistent. Do not change anything.”
 - “Upload this image as my world's cover, validate it for publishing, and show me any remaining issues. Do not publish yet.”

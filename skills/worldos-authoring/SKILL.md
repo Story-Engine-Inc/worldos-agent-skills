@@ -221,6 +221,6 @@ Never say an unpublished world was published unless `publish_world` succeeded in
 - Do not edit resources owned by another account or blocked resources. Direct writes to an owned public world must use the exact-versioned MCP tools so the outgoing immutable release is preserved.
 - Do not delete, transfer, unpublish, or publish without the explicit owner workflow above.
 - Do not mutate, repair, rewind, rename, or delete real saves. Use only live isolated-playtest tools for temporary authoring sessions.
-- Do not create built-in apps or modify shared/published apps.
+- Do not create built-in apps or modify official apps or Apps owned by another creator. Owned public widgets may be updated, with the understanding that the change affects every installation.
 - Do not expose raw operations, state paths, prompts, model/provider details, or other system internals to players.
 - Do not bypass an MCP refusal through another data source or private endpoint.
