@@ -46,9 +46,9 @@ Expected boundary: cover upload is complete only after the signed upload is fina
 
 ## Create a widget only when needed
 
-> My investigation Simulation needs a relationship evidence board where clues connect people, places, and claims. Search the WorldOS app catalog and inspect likely apps first. If an existing app can represent it, configure that app. Otherwise create a private reusable widget with accessible mobile interactions and a minimal persistent schema.
+> My investigation Simulation needs a relationship evidence board where clues connect people, places, and claims. Search the WorldOS app catalog and inspect likely apps first. If an existing app can represent it, configure that app. Otherwise create a public reusable widget with accessible mobile interactions and a minimal persistent schema.
 
-Expected boundary: reuse wins. A private widget is created only after the catalog search demonstrates a real capability gap.
+Expected boundary: reuse wins. A public widget is created only after the catalog search demonstrates a real capability gap, and successful creation publishes it immediately.
 
 ## Review a playtest
 

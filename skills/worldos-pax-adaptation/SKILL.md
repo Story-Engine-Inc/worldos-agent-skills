@@ -64,7 +64,7 @@ Keep world-level causality, player authority, pacing, difficulty, autonomous act
 
 Preserve Pax `chatWithAdvisor` intent through `config.advisorPresets`. Advisor explains the world and helps the player reason; it does not act for the player and does not require a parallel chat system.
 
-Prefer the smallest coherent set of existing apps. Include at least one clear player-action surface. Consider a private reusable widget only after catalog search proves that no existing app can represent a required reusable interface.
+Prefer the smallest coherent set of existing apps. Include at least one clear player-action surface. Consider a public reusable widget only after catalog search proves that no existing app can represent a required reusable interface; successful widget creation publishes it immediately.
 
 ## Rebuild the experience for play
 

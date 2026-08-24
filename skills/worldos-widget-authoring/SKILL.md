@@ -1,11 +1,11 @@
 ---
 name: worldos-widget-authoring
-description: Design, validate, create, inspect, or update a private reusable WorldOS UGC widget through the WorldOS MCP. Use when a Simulation needs an interactive interface or persistent domain structure that no existing WorldOS app can represent, or when an owned unpublished widget draft needs revision.
+description: Design, validate, create, inspect, or update a public reusable WorldOS UGC widget through the WorldOS MCP. Use when a Simulation needs an interactive interface or persistent domain structure that no existing WorldOS app can represent, or when an owned widget needs revision.
 ---
 
 # WorldOS Widget Authoring
 
-Create a reusable private UGC widget only when existing WorldOS apps cannot express the required interaction or state. Built-in apps, shared apps, published apps, and platform code are outside this workflow.
+Create a reusable public UGC widget only when existing WorldOS apps cannot express the required interaction or state. A successful create publishes the widget to the App Market immediately. Built-in apps, official apps, widgets owned by another creator, and platform code are outside this workflow.
 
 ## Confirm that a widget is necessary
 
@@ -58,7 +58,7 @@ const L = DICTS[WS.locale] || DICTS.en;
 
 Route headings, app and logo titles, `<title>`, buttons, labels, empty states, placeholders, select options, alerts, toasts, tooltips, `aria-label` and `alt` text, and visible fallback strings through that dictionary. Translate each locale naturally; do not copy one language into the other blocks. Real-world brand names may remain unchanged, but ordinary or fictional names should be localized naturally.
 
-Render content from `WS.state` as authored because the Simulation already supplies it in the player's language. Write display text in `defaultConfig` once, in one natural source language, and give every object in a localizable array a stable `id`; the platform adds data overlays when the app is installed in a world.
+Render content from `WS.state` as authored because the Simulation already supplies it in the player's language. Write display text in `defaultConfig` once, in one natural source language, and give every object in a localizable array a stable `id`; the platform generates complete default-seed overlays before the public App is saved.
 
 `validate_app_draft` performs a model-backed visible-copy inspection in addition to structural checks. Treat `i18n_lint_unavailable` as a retryable validation failure, not permission to write. Repair every `unlocalized_ui_copy` result before create or update. App Market name, tagline, and description translations are generated and persisted automatically by the MCP write; do not invent a separate store-copy overlay in the draft.
 
@@ -118,7 +118,7 @@ Do not create or update a widget that fails validation.
 
 ### Create
 
-Use `create_app_draft` with a stable idempotency key. Reuse the key only to retry an identical draft. The result is a private UGC draft; do not describe it as built-in, shared, or published.
+Use `create_app_draft` with a stable idempotency key. Reuse the key only to retry an identical draft. A successful result is an owned public UGC widget available in the App Market; do not describe it as built-in or official.
 
 ### Update
 
@@ -130,7 +130,7 @@ Use `create_app_draft` with a stable idempotency key. Reuse the key only to retr
 6. Call `update_app_draft` with the exact version.
 7. Fetch the app again and verify the new version and locale declarations.
 
-On a stale version, refetch, reapply the intended change, revalidate, and submit again. Never overwrite concurrent changes blindly.
+On a stale version, refetch, reapply the intended change, revalidate, and submit again. Never overwrite concurrent changes blindly. Updating an owned public widget changes the shared App for every world that uses it, so confirm that the requested change is intended for all installations before writing.
 
 ## Install into a world
 
@@ -138,12 +138,12 @@ After creating a widget, install it only in a world owned by the authorized acco
 
 ## Handoff
 
-Report the widget name, slug, private status, editor/market URLs, SDK actions, configuration contract, validation warnings, and the worlds or use cases it is intended to support. State that a human must review and publish it in WorldOS.
+Report the widget name, slug, public status, editor/market URLs, SDK actions, configuration contract, validation warnings, and the worlds or use cases it is intended to support. State that successful creation already published it to the WorldOS App Market.
 
 ## Hard boundaries
 
 - Do not create or edit built-in apps.
-- Do not edit another creator’s, shared, or published app.
-- Do not make the widget public or claim it was published.
+- Do not edit another creator’s or an official app.
+- Do not imply that public visibility grants ownership; update only an App returned by the owner-scoped tools.
 - Do not bypass validation or ownership through a database or private endpoint.
 - Do not put secrets, access tokens, or private URLs in HTML or config.

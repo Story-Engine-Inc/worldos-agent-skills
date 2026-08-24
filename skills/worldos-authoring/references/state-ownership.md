@@ -16,7 +16,7 @@ Use one authoritative app for each durable fact. Search the live app catalog and
 | Player objectives and consequences requiring decisions | Decisions or quests | Do not duplicate the same decision in multiple panels. |
 | Geography and territorial control | Region map | Ownership belongs to factions; per-region facts belong with the map. |
 | Hex movement and terrain | Tile map | Author or remix it through the ordinary live app schema and preserve world-specific metadata when editing. |
-| Custom domain data | Existing reusable widget, otherwise a private UGC widget | Create a widget only when no existing app expresses the state. |
+| Custom domain data | Existing reusable widget, otherwise a public UGC widget | Create a widget only when no existing app expresses the state; a successful create publishes it immediately. |
 
 ## Prompt ownership
 
