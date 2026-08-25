@@ -36,12 +36,20 @@ Put world-specific labels, people, organizations, starting records, and local ru
 
 Use the host-provided SDK rather than inventing storage or a transport layer:
 
+- `WS.context.get()` for runtime, world, app, locale, turn, and player-character identity;
 - `WS.state` for the widget’s current persistent namespace;
 - `WS.onUpdate(callback)` to render new host state;
 - `WS.sendAction(payload)` for a deliberate player action that should consume a Simulation turn and receive an AI response;
 - `WS.engage({ kind, id, label, on })` for lightweight reversible engagement such as liking, following, voting, bookmarking, or reposting when no turn should be consumed immediately.
 
 Use `sendAction` only for choices worth a turn. Use `engage` for passive micro-interactions. Keep payloads semantic and player-facing; do not expose raw state paths or operation grammar.
+
+When the widget needs player-visible world data, an installed official capability, an atomic multi-system action, or collaboration with another UGC widget, read [references/widget-sdk-v2.md](references/widget-sdk-v2.md). In particular:
+
+- inspect availability with `WS.capabilities.has(name)` before using an optional official capability;
+- use `WS.act()` for a turn-worthy action whose capability transaction must commit or roll back as one unit;
+- use `WS.apps.list/get/subscribe/call` to discover and collaborate with installed UGC widgets while keeping the provider as the sole owner of its data;
+- declare public commands, dependencies, and state sharing in `defaultConfig.integration`.
 
 ## Localize the complete interface
 
@@ -95,6 +103,21 @@ Make `configGuide` short and precise. It should explain the expected installatio
 
 Make `defaultConfig` small but renderable. It should demonstrate the generic structure without shipping a fictional world’s full content.
 
+When the widget intentionally uses official capabilities or another UGC widget, add a typed integration manifest:
+
+```json
+{
+  "data": {},
+  "integration": {
+    "provides": [{ "name": "reserve", "description": "Reserve one available item" }],
+    "requires": ["wallet", "inventory", "item-catalog"],
+    "exposeState": true
+  }
+}
+```
+
+`provides` lists commands other widgets may call, `requires` lists official capability names or installed widget slugs, and `exposeState: false` hides this widget’s namespace from other widgets. These fields describe compatibility rather than install-time permissions. Never list the widget’s own slug in `requires`.
+
 Set `langs` to every locale required by the live schema and ensure the HTML actually implements each declared dictionary. A declaration without matching UI copy is invalid.
 
 ## Validate before writing
@@ -103,6 +126,7 @@ Call `validate_app_draft` and repair every error. Review warnings about:
 
 - sandbox violations;
 - unsupported SDK usage;
+- malformed, duplicate, self-referential, or undeclared integration dependencies;
 - storage or navigation;
 - external resources;
 - unsafe HTML;
@@ -138,7 +162,7 @@ After creating a widget, install it only in a world owned by the authorized acco
 
 ## Handoff
 
-Report the widget name, slug, public status, editor/market URLs, SDK actions, configuration contract, validation warnings, and the worlds or use cases it is intended to support. State that successful creation already published it to the WorldOS App Market.
+Report the widget name, slug, public status, editor/market URLs, SDK actions, integration manifest, configuration contract, validation warnings, and the worlds or use cases it is intended to support. State that successful creation already published it to the WorldOS App Market.
 
 ## Hard boundaries
 
