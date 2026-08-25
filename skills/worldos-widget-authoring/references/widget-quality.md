@@ -12,8 +12,12 @@
 
 - [ ] Initial rendering reads `WS.state`.
 - [ ] Updates are handled through `WS.onUpdate`.
-- [ ] Turn-consuming decisions use `WS.sendAction`.
+- [ ] Turn-consuming decisions use `WS.sendAction` or `WS.act` according to whether an atomic capability transaction is needed.
 - [ ] Passive engagement uses `WS.engage` when appropriate.
+- [ ] Optional official capabilities are checked with `WS.capabilities.has` before use.
+- [ ] A multi-system guaranteed change uses one `WS.act` transaction rather than separate actions.
+- [ ] Another widget's state is read or called through `WS.apps`; it is not copied or directly mutated.
+- [ ] `defaultConfig.integration` accurately declares used dependencies, callable commands, and state-sharing intent.
 - [ ] Player actions contain semantic intent, not internal state paths.
 - [ ] The widget never speaks for the player without a player gesture.
 
@@ -59,4 +63,4 @@
 - [ ] Creates use an idempotency key.
 - [ ] Updates use the exact fetched version.
 - [ ] The post-write app was fetched and verified.
-- [ ] The handoff says the widget remains private and unpublished.
+- [ ] The handoff says a successful create published the widget to the App Market immediately.
