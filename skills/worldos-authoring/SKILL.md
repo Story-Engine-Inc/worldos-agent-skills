@@ -38,10 +38,11 @@ Compose the world payload manually when fidelity and deliberate mechanics matter
 
 1. Use `list_owned_worlds` if the user has not supplied an unambiguous world ID.
 2. Call `get_owned_world` and retain its complete `world` payload and exact `updatedAt`.
-3. Modify only the intended fields while preserving every untouched world field and app installation config.
-4. Call `validate_world` on the complete candidate world.
-5. Call `patch_world` for bounded world-copy or app-install changes when the live contract exposes it; otherwise call `update_world` with the complete candidate. Pass the exact `updatedAt` as `expectedUpdatedAt` either way.
-6. Fetch the world again and verify the new version.
+3. Inspect the returned read-only `localizationStatus`. It audits actual world and installed-App overlay coverage; do not infer readiness from `config.localization` alone. If the user asked to repair missing translations, call `request_world_localization` with the exact `updatedAt`, then poll `get_owned_world` until the job completes or needs attention.
+4. Modify only the intended fields while preserving every untouched world field and app installation config.
+5. Call `validate_world` on the complete candidate world.
+6. Call `patch_world` for bounded world-copy or app-install changes when the live contract exposes it; otherwise call `update_world` with the complete candidate. Pass the exact `updatedAt` as `expectedUpdatedAt` either way.
+7. Fetch the world again and verify the new version.
 
 `update_world` replaces the accepted world copy and complete app-installation list atomically. `patch_world` merges a bounded section but still validates and saves the complete result atomically. A published world remains public and receives a new immutable release version. Do not attempt to change fields the selected schema does not accept, such as a base remix relationship.
 
@@ -162,6 +163,8 @@ Record external source identity, exact URL and version, retrieval time, hashes, 
 Use generic `i18n[locale]` overlays. Never invent fields such as `titleZh`, `nameEn`, or `labelEs`.
 
 The canonical language is not necessarily English. Treat each locale, including `en`, as eligible for an overlay. Preserve stable IDs so array elements can be matched across locales. Write native product copy for each locale rather than mirroring sentence structure mechanically.
+
+`get_owned_world.localizationStatus` is the readiness authority for authoring. It reports actual missing world fields and App fields per locale, the persisted `availableLocales`, and whether the two agree. When translations are incomplete or inconsistent, use `request_world_localization`; it queues a complete en/es/zh repair without publishing the world or changing its visibility. Re-fetch until every requested locale is ready and the status is consistent. Do not claim success merely because a localization job was queued.
 
 ## Validate, repair, then write
 
