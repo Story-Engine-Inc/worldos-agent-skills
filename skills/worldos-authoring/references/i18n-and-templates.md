@@ -16,6 +16,8 @@ For arrays of localizable objects:
 
 Treat legacy fields ending in language suffixes as migration debt, never as examples for new content.
 
+Do not treat `config.localization.readyLocales` as proof that translation exists. The owned-world response exposes a read-only `localizationStatus` computed from actual world and installed-App overlays. If it reports missing fields or inconsistent readiness mirrors, call `request_world_localization` with the exact world version and re-fetch until the repair completes. The request does not publish the world or change its visibility.
+
 ## Player variables
 
 Use the standard semantic setup fields when appropriate:
