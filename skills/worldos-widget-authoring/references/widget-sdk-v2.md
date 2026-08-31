@@ -38,20 +38,68 @@ Put the manifest in `defaultConfig.integration`:
 {
   "data": {},
   "integration": {
+    "contractVersion": 1,
+    "stateSchema": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": { "id": { "type": "string" }, "reserved": { "type": "boolean" } },
+            "required": ["id", "reserved"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["items"],
+      "additionalProperties": false
+    },
+    "actions": [{
+      "name": "buy",
+      "inputSchema": {
+        "type": "object",
+        "properties": { "type": { "type": "string", "enum": ["buy"] }, "itemId": { "type": "string" } },
+        "required": ["type", "itemId"],
+        "additionalProperties": false
+      }
+    }],
     "provides": [
-      { "name": "reserve", "description": "Reserve one available item" }
+      {
+        "name": "reserve",
+        "description": "Reserve one available item",
+        "inputSchema": {
+          "type": "object",
+          "properties": { "itemId": { "type": "string" } },
+          "required": ["itemId"],
+          "additionalProperties": false
+        }
+      }
     ],
     "requires": ["wallet", "inventory", "item-catalog"],
-    "exposeState": true
+    "exposeState": true,
+    "tests": [
+      { "name": "default state", "kind": "state", "value": { "items": [] }, "expect": "valid" },
+      { "name": "buy requires an id", "kind": "action", "subject": "buy", "value": { "type": "buy" }, "expect": "invalid" }
+    ]
   }
 }
 ```
 
+- `contractVersion`: use `1` for the current machine-readable contract.
+- `stateSchema`: the complete durable namespace under `WS.state`. World installation merges `apps[].config.initialData` over `defaultConfig.data` and validates the result.
+- `actions`: up to 32 unique turn-worthy action names. Each `inputSchema` validates the full payload, including its `type` or `action` discriminator.
 - `provides`: up to 32 unique public commands. Names start with a lowercase letter and contain only lowercase letters, digits, `.`, `_`, or `-`.
+- `provides[].inputSchema`: validates the complete `WS.apps.call` payload before a turn is accepted.
 - `requires`: up to 32 unique official capability names or lowercase installed-widget slugs. Do not require the widget itself.
 - `exposeState`: defaults to `true`; set it to `false` only for a namespace other widgets must not read.
+- `tests`: up to 32 deterministic `state`, `action`, or `command` fixtures with `expect: "valid" | "invalid"`. Non-state tests name their declaration in `subject`.
 
-The manifest describes compatibility, not install-time permission grants. The host still checks installed capabilities, target installation, declared commands, payload shape and size, atomicity, idempotency, and replay behavior.
+The restricted schema dialect supports `type`, `description`, `properties`, `required`, `items`, scalar `enum`, `additionalProperties`, `minItems`, `maxItems`, `minLength`, `maxLength`, `minimum`, `maximum`, and `default`. It intentionally rejects `$ref`, patterns, executable formats, alternatives, and remote schemas. If `stateSchema` is omitted, authoring validation infers a strict version-1 schema from `defaultConfig.data`; use an explicit contract for optional fields, bounds and enums.
+
+Call `run_app_contract_tests` before `validate_app_draft`, then preserve the normalized integration returned by the contract runner. Installation validation catches missing dependencies and invalid `initialData`. At runtime, invalid action/command payloads are rejected before the turn, transactions roll back atomically, and AI or widget writes that would leave the calling namespace outside `stateSchema` are dropped.
+
+The manifest describes compatibility, not install-time permission grants. The host still checks installed capabilities, target installation, declared commands, payload shape and size, contracted state, atomicity, idempotency, and replay behavior.
 
 Discover collaborators with `WS.apps.list()`, inspect one with `WS.apps.get(slug)`, and subscribe with `WS.apps.subscribe(slug, callback)`. A consumer may read an exposed provider namespace but never mutate it directly. Use `WS.apps.call` for provider-owned behavior and keep the provider as the single source of truth.
 
@@ -79,4 +127,4 @@ await WS.act({
 });
 ```
 
-Transactions support at most 20 steps and 32 KiB. A negative resulting wallet balance, unavailable capability, missing update/remove target, unsafe path, malformed step, or duplicate idempotency key with incompatible content rejects the whole transaction.
+Transactions support at most 20 steps and 32 KiB. A negative resulting wallet balance, unavailable capability, missing update/remove target, unsafe path, malformed step, invalid resulting App state, or duplicate idempotency key with incompatible content rejects the whole transaction.
