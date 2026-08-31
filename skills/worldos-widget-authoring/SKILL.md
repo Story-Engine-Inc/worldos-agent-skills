@@ -49,7 +49,7 @@ When the widget needs player-visible world data, an installed official capabilit
 - inspect availability with `WS.capabilities.has(name)` before using an optional official capability;
 - use `WS.act()` for a turn-worthy action whose capability transaction must commit or roll back as one unit;
 - use `WS.apps.list/get/subscribe/call` to discover and collaborate with installed UGC widgets while keeping the provider as the sole owner of its data;
-- declare public commands, dependencies, and state sharing in `defaultConfig.integration`.
+- declare the state schema, action payloads, public commands, dependencies, fixtures, and state sharing in `defaultConfig.integration`.
 
 ## Localize the complete interface
 
@@ -103,26 +103,37 @@ Make `configGuide` short and precise. It should explain the expected installatio
 
 Make `defaultConfig` small but renderable. It should demonstrate the generic structure without shipping a fictional world’s full content.
 
-When the widget intentionally uses official capabilities or another UGC widget, add a typed integration manifest:
+Every new or updated widget carries a versioned, typed App Contract:
 
 ```json
 {
   "data": {},
   "integration": {
-    "provides": [{ "name": "reserve", "description": "Reserve one available item" }],
+    "contractVersion": 1,
+    "stateSchema": {
+      "type": "object",
+      "properties": { "items": { "type": "array", "items": { "type": "object" } } },
+      "required": ["items"],
+      "additionalProperties": false
+    },
+    "actions": [{ "name": "buy", "inputSchema": { "type": "object" } }],
+    "provides": [{ "name": "reserve", "description": "Reserve one available item", "inputSchema": { "type": "object" } }],
     "requires": ["wallet", "inventory", "item-catalog"],
-    "exposeState": true
+    "exposeState": true,
+    "tests": [{ "name": "default state", "kind": "state", "value": { "items": [] }, "expect": "valid" }]
   }
 }
 ```
 
-`provides` lists commands other widgets may call, `requires` lists official capability names or installed widget slugs, and `exposeState: false` hides this widget’s namespace from other widgets. These fields describe compatibility rather than install-time permissions. Never list the widget’s own slug in `requires`.
+`stateSchema` defines the complete durable namespace. `actions[].inputSchema` validates full `WS.act`/`WS.sendAction` payloads, including their `type` or `action` discriminator. `provides[].inputSchema` validates public command payloads. `requires` lists official capability names or installed widget slugs, `tests` provides deterministic valid/invalid fixtures, and `exposeState: false` hides this widget’s namespace from other widgets. These fields describe compatibility rather than install-time permissions. Never list the widget’s own slug in `requires`.
+
+Use only the restricted schema dialect described in [references/widget-sdk-v2.md](references/widget-sdk-v2.md). When `stateSchema` is absent, validation infers a strict version-1 schema from `defaultConfig.data`; write an explicit schema whenever fields are optional or need enums or bounds.
 
 Set `langs` to every locale required by the live schema and ensure the HTML actually implements each declared dictionary. A declaration without matching UI copy is invalid.
 
 ## Validate before writing
 
-Call `validate_app_draft` and repair every error. Review warnings about:
+Call `run_app_contract_tests` first. Preserve its normalized `integration` result when it inferred a contract, and repair every failed fixture. Then call `validate_app_draft` and repair every error. Review warnings about:
 
 - sandbox violations;
 - unsupported SDK usage;
@@ -150,15 +161,15 @@ Use `create_app_draft` with a stable idempotency key. Reuse the key only to retr
 2. Call `get_owned_app` and retain the full draft and exact `updatedAt`.
 3. Preserve untouched fields while applying the intended change.
 4. If the fetched legacy draft declares fewer than the required locales, add the missing dictionaries and replace `langs` with the complete current set.
-5. Re-run `validate_app_draft` on the complete candidate.
+5. Re-run `run_app_contract_tests` and `validate_app_draft` on the complete candidate.
 6. Call `update_app_draft` with the exact version.
-7. Fetch the app again and verify the new version and locale declarations.
+7. Fetch the app again and verify the new version, locale declarations, and persisted contract.
 
 On a stale version, refetch, reapply the intended change, revalidate, and submit again. Never overwrite concurrent changes blindly. Updating an owned public widget changes the shared App for every world that uses it, so confirm that the requested change is intended for all installations before writing.
 
 ## Install into a world
 
-After creating a widget, install it only in a world owned by the authorized account. Put world-specific opening data and local rules in that world’s installation config. Revalidate the complete world after adding the widget.
+After creating a widget, install it only in a world owned by the authorized account. Put world-specific opening data in `apps[].config.initialData`, not `config.data`; it must validate after being merged over the App defaults. Put local rules in that world’s installation config. Revalidate the complete world after adding the widget so missing dependencies and invalid seed state are caught before persistence.
 
 ## Handoff
 

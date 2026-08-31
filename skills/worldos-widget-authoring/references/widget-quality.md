@@ -17,7 +17,8 @@
 - [ ] Optional official capabilities are checked with `WS.capabilities.has` before use.
 - [ ] A multi-system guaranteed change uses one `WS.act` transaction rather than separate actions.
 - [ ] Another widget's state is read or called through `WS.apps`; it is not copied or directly mutated.
-- [ ] `defaultConfig.integration` accurately declares used dependencies, callable commands, and state-sharing intent.
+- [ ] `defaultConfig.integration` has `contractVersion: 1` and accurately declares state, actions, commands, dependencies, fixtures, and state-sharing intent.
+- [ ] Every action and public command has an `inputSchema` for its full payload.
 - [ ] Player actions contain semantic intent, not internal state paths.
 - [ ] The widget never speaks for the player without a player gesture.
 
@@ -53,11 +54,14 @@
 
 - [ ] `defaultConfig` is minimal and renderable.
 - [ ] `configGuide` explains the installation shape succinctly.
+- [ ] World install overrides use `config.initialData`, never `config.data`.
 - [ ] Localizable data uses stable IDs and can accept `i18n[locale]` overlays.
 - [ ] The reusable prompt is short, generic, and aligned with actual behavior.
+- [ ] Explicit state schemas model optional fields, enums and useful bounds; inferred schemas are reviewed rather than trusted blindly.
 
 ## MCP lifecycle
 
+- [ ] `run_app_contract_tests` passes every deterministic fixture.
 - [ ] `validate_app_draft` has no errors.
 - [ ] Every warning was assessed.
 - [ ] Creates use an idempotency key.
