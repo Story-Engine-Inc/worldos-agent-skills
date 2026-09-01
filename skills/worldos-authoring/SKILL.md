@@ -151,12 +151,15 @@ Record external source identity, exact URL and version, retrieval time, hashes, 
 - Give every character a stable, unique ID.
 - Keep the cast small enough for each character to have a distinct role, motivation, leverage, and relationship to the player.
 - Ensure every character reference in chats, posts, factions, markers, stats, and prompts resolves to a real character.
+- Use `hidden:true` only for a spoiler character the AI should introduce later. State the entrance condition in world-level scenario rules, and keep that character out of player-visible opening chats, posts, calendars, dating profiles, markers, and other rosters. Private character-stat opening data may still establish their initial condition.
 - Player setup is optional. A fixed protagonist, state, organization, or god-view Simulation may need no name or persona field at all.
 - Put setup fields only in `config.initFields`; never invent `setupFields` or another container. Use `{key:"player_name", role:"name"}` and `{key:"player_persona", role:"persona"}` only when those concepts are genuinely part of the experience.
 - Use character template variables for references to customizable characters, including references inside every app’s opening data.
 - Provide useful defaults and clickable options for required setup fields so a player can start immediately.
 - If a setup option claims to change affiliation, location, era, equipment, condition, authority, or another durable opening fact, verify that every option is compatible with the shared opening state or can be represented through a conditional mechanism documented by the live contract. Otherwise narrow the options or split the experience; do not offer cosmetic choices that contradict seeded state.
 - Put Advisor presets in `config.advisorPresets` for explanation and strategic guidance, never to take actions on the player’s behalf.
+
+When Achievements supports the intended loop, author a fixed roster of 10–14 consequential outcomes: roughly half attainable bronze milestones, 4–5 difficult silver goals, 2–3 exceptional gold outcomes, and 2–3 genuinely hidden discoveries. Reward choices, victories, completed relationship or objective routes, mutually exclusive paths, and endings. Do not reward mere turn counts, message counts, opening an App, or an automatic first-turn event. Leave Achievements uninstalled rather than shipping an empty roster.
 
 ## Localize as structured data
 
