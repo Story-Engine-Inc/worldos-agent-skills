@@ -46,6 +46,7 @@ Use `sendAction` only for choices worth a turn. Use `engage` for passive micro-i
 
 When the widget needs player-visible world data, an installed official capability, an atomic multi-system action, or collaboration with another UGC widget, read [references/widget-sdk-v2.md](references/widget-sdk-v2.md). In particular:
 
+- declare every player-visible source the widget reads in `defaultConfig.integration.reads`; use the stable source ids from the reference rather than asking a non-technical creator to wire state paths;
 - inspect availability with `WS.capabilities.has(name)` before using an optional official capability;
 - use `WS.act()` for a turn-worthy action whose capability transaction must commit or roll back as one unit;
 - use `WS.apps.list/get/subscribe/call` to discover and collaborate with installed UGC widgets while keeping the provider as the sole owner of its data;
@@ -116,6 +117,7 @@ Every new or updated widget carries a versioned, typed App Contract:
       "required": ["items"],
       "additionalProperties": false
     },
+    "reads": ["world.quests", "world.time"],
     "actions": [{ "name": "buy", "inputSchema": { "type": "object" } }],
     "provides": [{ "name": "reserve", "description": "Reserve one available item", "inputSchema": { "type": "object" } }],
     "requires": ["wallet", "inventory", "item-catalog"],
@@ -125,7 +127,7 @@ Every new or updated widget carries a versioned, typed App Contract:
 }
 ```
 
-`stateSchema` defines the complete durable namespace. `actions[].inputSchema` validates full `WS.act`/`WS.sendAction` payloads, including their `type` or `action` discriminator. `provides[].inputSchema` validates public command payloads. `requires` lists official capability names or installed widget slugs, `tests` provides deterministic valid/invalid fixtures, and `exposeState: false` hides this widget’s namespace from other widgets. These fields describe compatibility rather than install-time permissions. Never list the widget’s own slug in `requires`.
+`stateSchema` defines the complete durable namespace. `reads` lists the player-visible world or player sources the widget consumes, so Studio and world validation can generate and verify the connection without world-specific wiring rules. `actions[].inputSchema` validates full `WS.act`/`WS.sendAction` payloads, including their `type` or `action` discriminator. `provides[].inputSchema` validates public command payloads. `requires` lists explicit official capability or installed-widget dependencies needed beyond those read declarations, `tests` provides deterministic valid/invalid fixtures, and `exposeState: false` hides this widget’s namespace from other widgets. These fields describe compatibility rather than install-time permissions. Never list the widget’s own slug in `requires`.
 
 Use only the restricted schema dialect described in [references/widget-sdk-v2.md](references/widget-sdk-v2.md). When `stateSchema` is absent, validation infers a strict version-1 schema from `defaultConfig.data`; write an explicit schema whenever fields are optional or need enums or bounds.
 
@@ -138,6 +140,7 @@ Call `run_app_contract_tests` first. Preserve its normalized `integration` resul
 - sandbox violations;
 - unsupported SDK usage;
 - malformed, duplicate, self-referential, or undeclared integration dependencies;
+- undeclared world reads or world data that the intended target does not provide;
 - storage or navigation;
 - external resources;
 - unsafe HTML;

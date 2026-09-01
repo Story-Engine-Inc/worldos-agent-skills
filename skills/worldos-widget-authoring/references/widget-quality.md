@@ -15,9 +15,11 @@
 - [ ] Turn-consuming decisions use `WS.sendAction` or `WS.act` according to whether an atomic capability transaction is needed.
 - [ ] Passive engagement uses `WS.engage` when appropriate.
 - [ ] Optional official capabilities are checked with `WS.capabilities.has` before use.
+- [ ] Every world/player source the widget consumes is declared with its stable id in `defaultConfig.integration.reads`.
+- [ ] Read-only world integration does not add unnecessary `WS.apps` calls, copied state, write transactions, or world-specific wiring rules.
 - [ ] A multi-system guaranteed change uses one `WS.act` transaction rather than separate actions.
 - [ ] Another widget's state is read or called through `WS.apps`; it is not copied or directly mutated.
-- [ ] `defaultConfig.integration` has `contractVersion: 1` and accurately declares state, actions, commands, dependencies, fixtures, and state-sharing intent.
+- [ ] `defaultConfig.integration` has `contractVersion: 1` and accurately declares state, reads, actions, commands, dependencies, fixtures, and state-sharing intent.
 - [ ] Every action and public command has an `inputSchema` for its full payload.
 - [ ] Player actions contain semantic intent, not internal state paths.
 - [ ] The widget never speaks for the player without a player gesture.
