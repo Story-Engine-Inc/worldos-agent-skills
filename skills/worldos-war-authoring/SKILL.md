@@ -12,7 +12,7 @@ Build polity-scale war Simulations from the live WorldOS authoring contract and 
 1. Call `get_authoring_guide`.
 2. Call `list_authoring_templates` and confirm that `grand-strategy-war` is available.
 3. Call `get_authoring_template` with `templateId: "grand-strategy-war"` and retain its exact version.
-4. Treat the returned system-prompt template, action reminder, assembly rules, applicability boundaries, and validation checklist as authoritative over bundled guidance.
+4. Treat the returned system-prompt macro token, action-reminder macro token, map-prompt macro token, recommended installation configs, assembly rules, applicability boundaries, and validation checklist as authoritative over bundled guidance.
 5. Search for every required app and call `get_app_guide` before using any remembered slug or configuration field.
 6. Read [references/war-world-quality.md](references/war-world-quality.md) before composing the scenario or validating the complete world.
 
@@ -61,14 +61,14 @@ Do not offer a starting-polity or leader option unless every choice is compatibl
 
 Use the template result as follows:
 
-1. Put the returned `systemPromptTemplate` in `config.systemPrompt`.
-2. Complete one scenario block from `scenarioPromptScaffold` and append it to the canonical rules.
+1. Compose `config.systemPrompt` as a concise premise, the returned `systemPromptTemplate` macro token, and one completed scenario block from `scenarioPromptScaffold`.
+2. Store every returned macro token verbatim and first. Do not expand it, copy the shared prose from another source, or replace it with a remembered version. Append concise scenario-specific guidance after the token only when needed.
 3. Write scenario-specific win, loss, and end conditions from `softRulesScaffold`; do not copy one source world's outcome conditions into another setting.
 4. Ensure every template variable resolves from `config.initFields`, a world character, or a supported semantic role. If the world has no personal leader identity, adapt only the identity sentence rather than inventing an unused setup field.
-5. Put the returned `actionReminder` on the selected player-input installation only when its live app guide exposes that field.
-6. Use coordinated multi-action input only when the live app guide supports it and one turn genuinely represents a coordinated plan across diplomacy, production, research, and military movement.
+5. Apply the returned `recommendedInstallConfigs` only after confirming each selected App's live guide: put `actionReminder` on player input, `mapPrompt` on the region map, coordinated multi-action mode on player input, and `stream:false` on Story when those fields are supported.
+6. Use coordinated multi-action input only when one turn genuinely represents a coordinated plan across diplomacy, production, research, and military movement.
 
-Do not summarize, soften, or replace the canonical adjudication rules with generic prose. Do not copy raw operations, state paths, region lists, app schemas, or model instructions into the world prompt. App-specific behavior belongs in the relevant app installation prompt.
+Do not summarize, soften, expand, or replace the canonical macro rules with generic prose. Do not copy raw operations, state paths, region lists, app schemas, or model instructions into the world prompt. App-specific behavior belongs in the relevant app installation prompt.
 
 ## Choose a focused state model
 

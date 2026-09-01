@@ -30,6 +30,8 @@ Use this checklist before creating or updating a world.
 - [ ] App-specific behavior is not duplicated in the world prompt.
 - [ ] Stable IDs are unique and all cross-references resolve.
 - [ ] Hidden future events are not leaked through seeded calendars or feeds.
+- [ ] Hidden characters do not appear in player-visible opening chats, posts, calendars, dating profiles, markers, or rosters; their entrance condition is defined in world rules.
+- [ ] If Achievements is installed, it has 10–14 consequential preset outcomes with meaningful bronze, silver, gold, and hidden coverage rather than activity counters.
 - [ ] Optional apps such as quests, inventory, chats, stats, and maps exist because the core loop needs them, not because a template listed them.
 
 ## Player setup when present
@@ -47,6 +49,7 @@ Use this checklist before creating or updating a world.
 - [ ] No exclusive surfaces conflict.
 - [ ] No existing app is being unnecessarily recreated as a widget.
 - [ ] A region map passed the map-authoring checks when present.
+- [ ] A real geographic map has verified calibration, and every multi-layer map has globally unique region IDs and bounded sub-maps.
 
 ## Localization and player safety
 

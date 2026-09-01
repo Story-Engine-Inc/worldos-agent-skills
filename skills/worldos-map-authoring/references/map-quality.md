@@ -32,6 +32,8 @@ For each region:
 
 Large map payloads should prioritize playable geometry over coastline precision.
 
+For a real geographic map, verify the declared `geo` calibration with known points spread across the map. Equirectangular and Mercator bounds must match the view-box edges; conic parameters must come from fitted control points. A marker on a calibrated map should carry both its containing region and real latitude/longitude so the runtime can preserve the exact place.
+
 ## Large strategic map budget
 
 Do not carry every source province into a global or continent-scale Simulation. Thousands of regions and highly detailed paths make the world payload harder to inspect and can consume runtime context without adding meaningful choices. Aim for the smallest map that preserves the player's actual fronts, routes, supply decisions, and political distinctions.
@@ -92,6 +94,8 @@ Cross-check that:
 - moving markers start in valid regions or coordinates;
 - regional stats use the same region IDs as geometry;
 - actions operate on the intended scope: own, enemy, neutral, vassal, or any.
+- region IDs remain globally unique across every layer, every `childMapId` resolves, and nested maps stay small enough to enter without reloading huge geometry;
+- calibrated markers resolve to the intended place by both region and real coordinates.
 
 ## Manual preview review
 
@@ -102,5 +106,6 @@ Schema validation cannot establish visual quality. In the WorldOS preview, inspe
 - dense borders;
 - map visibility behind default windows;
 - marker overlap;
+- each layer entrance, return path, and representative nested region;
 - mobile readability;
 - background loading and attribution.

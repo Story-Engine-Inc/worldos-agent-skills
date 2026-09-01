@@ -56,6 +56,27 @@ Author or remix a tile map through the selected app’s live schema. Use it when
 - Leave enough empty visual space for the Simulation’s floating panels when the map is used as a background.
 - Prefer a smaller accurate map to a huge map with broken geometry or unreadable labels.
 
+### Calibrate real-world geography
+
+For a real geographic map, declare the live `geo` calibration instead of asking the AI to guess map-space coordinates:
+
+- equirectangular and Mercator maps provide the real `west`, `east`, `north`, and `south` edges;
+- conic artwork uses fitted `n`, `lon0`, `f`, `x0`, and `y0` parameters from known control points;
+- verify at least three known places in different parts of the map before writing;
+- on a calibrated map, give a placed marker both its containing `regionId` and real `lat`/`lng`; use coordinates alone only where no region covers the point, such as open water.
+
+Do not preserve a calibration after changing the map's view box or artwork unless the same control points still verify it.
+
+### Use layers only for meaningful drill-down
+
+When the live guide exposes layered maps, enable `layers`, define bounded `subMaps`, and point an entrance region or pin to its child with `childMapId`.
+
+- Region IDs are globally unique across the root and every sub-map because ownership and regional state share one namespace.
+- Each layer owns its own geography and ownership; changing a parent does not silently rewrite its child.
+- Keep sub-maps to a few dozen regions. Large strategic geometry belongs on the root map.
+- Point layers need reliable anchors and bounds; region layers need real polygon geometry.
+- A marker anchored by `regionId` resolves to that region's layer; a free coordinate marker names its `mapId` when the live schema requires it.
+
 ## Define regions
 
 Each region needs:
@@ -87,6 +108,7 @@ For a large strategic map, set a region and geometry budget before drafting the 
 - Use font size and label density proportional to geographic importance.
 - Skip tiny labels that cannot be read, but retain at least one useful label for each major faction.
 - Give every marker a stable ID and valid faction, character, or region references.
+- On a geo-calibrated map, give placed markers real `lat`/`lng` as well as `regionId` so named cities, ports, and sea positions do not collapse to generic region centers.
 - Use markers only for pieces that can move or convey strategic information; do not duplicate static region labels as markers.
 
 ## Ownership, regional state, and actions
