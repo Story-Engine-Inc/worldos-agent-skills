@@ -15,7 +15,9 @@
 - [ ] Turn-consuming decisions use `WS.sendAction` or `WS.act` according to whether an atomic capability transaction is needed.
 - [ ] Passive engagement uses `WS.engage` when appropriate.
 - [ ] Optional official capabilities are checked with `WS.capabilities.has` before use.
-- [ ] Every world/player source the widget consumes is declared with its stable id in `defaultConfig.integration.reads`.
+- [ ] `infer_app_data_requirements` was called from the plain-language brief; only its minimal returned source set is implemented.
+- [ ] Every world/player source uses its exact `WS.data.get` call and is declared in `defaultConfig.integration.reads`.
+- [ ] One `WS.data.subscribe(() => void refresh())` keeps all read-only views current.
 - [ ] Read-only world integration does not add unnecessary `WS.apps` calls, copied state, write transactions, or world-specific wiring rules.
 - [ ] A multi-system guaranteed change uses one `WS.act` transaction rather than separate actions.
 - [ ] Another widget's state is read or called through `WS.apps`; it is not copied or directly mutated.
@@ -64,6 +66,7 @@
 ## MCP lifecycle
 
 - [ ] `run_app_contract_tests` passes every deterministic fixture.
+- [ ] Every `readTests` entry passes in `normalized` mode for new or updated read-only code.
 - [ ] `validate_app_draft` has no errors.
 - [ ] Every warning was assessed.
 - [ ] Creates use an idempotency key.
