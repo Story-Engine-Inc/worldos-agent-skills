@@ -46,7 +46,8 @@ Use `sendAction` only for choices worth a turn. Use `engage` for passive micro-i
 
 When the widget needs player-visible world data, an installed official capability, an atomic multi-system action, or collaboration with another UGC widget, read [references/widget-sdk-v2.md](references/widget-sdk-v2.md). In particular:
 
-- declare every player-visible source the widget reads in `defaultConfig.integration.reads`; use the stable source ids from the reference rather than asking a non-technical creator to wire state paths;
+- call `infer_app_data_requirements` with the creator's plain-language brief, implement only its returned `WS.data.get` calls, and declare exactly those ids in `defaultConfig.integration.reads`; never ask a non-technical creator to choose ids or state paths;
+- load normalized world data in one `refresh()` and register one `WS.data.subscribe(() => void refresh())` subscription;
 - inspect availability with `WS.capabilities.has(name)` before using an optional official capability;
 - use `WS.act()` for a turn-worthy action whose capability transaction must commit or roll back as one unit;
 - use `WS.apps.list/get/subscribe/call` to discover and collaborate with installed UGC widgets while keeping the provider as the sole owner of its data;
@@ -127,7 +128,7 @@ Every new or updated widget carries a versioned, typed App Contract:
 }
 ```
 
-`stateSchema` defines the complete durable namespace. `reads` lists the player-visible world or player sources the widget consumes, so Studio and world validation can generate and verify the connection without world-specific wiring rules. `actions[].inputSchema` validates full `WS.act`/`WS.sendAction` payloads, including their `type` or `action` discriminator. `provides[].inputSchema` validates public command payloads. `requires` lists explicit official capability or installed-widget dependencies needed beyond those read declarations, `tests` provides deterministic valid/invalid fixtures, and `exposeState: false` hides this widget’s namespace from other widgets. These fields describe compatibility rather than install-time permissions. Never list the widget’s own slug in `requires`.
+`stateSchema` defines the complete durable namespace. `reads` is the minimal set returned by `infer_app_data_requirements`, so Studio and world validation can verify the connection without world-specific wiring rules. `actions[].inputSchema` validates full `WS.act`/`WS.sendAction` payloads, including their `type` or `action` discriminator. `provides[].inputSchema` validates public command payloads. `requires` lists explicit official capability or installed-widget dependencies needed beyond those read declarations, `tests` provides deterministic valid/invalid fixtures, and `exposeState: false` hides this widget’s namespace from other widgets. These fields describe compatibility rather than install-time permissions. Never list the widget’s own slug in `requires`.
 
 Use only the restricted schema dialect described in [references/widget-sdk-v2.md](references/widget-sdk-v2.md). When `stateSchema` is absent, validation infers a strict version-1 schema from `defaultConfig.data`; write an explicit schema whenever fields are optional or need enums or bounds.
 
@@ -135,7 +136,7 @@ Set `langs` to every locale required by the live schema and ensure the HTML actu
 
 ## Validate before writing
 
-Call `run_app_contract_tests` first. Preserve its normalized `integration` result when it inferred a contract, and repair every failed fixture. Then call `validate_app_draft` and repair every error. Review warnings about:
+When the widget displays world data, call `infer_app_data_requirements` before writing the final HTML. Then call `run_app_contract_tests`; preserve its normalized `integration` result, repair every failed state/action fixture, and require every `readTests` entry to use `mode: "normalized"` and pass. Finally call `validate_app_draft` and repair every error. Review warnings about:
 
 - sandbox violations;
 - unsupported SDK usage;
@@ -163,10 +164,11 @@ Use `create_app_draft` with a stable idempotency key. Reuse the key only to retr
 1. Use `list_owned_apps` when selection is needed.
 2. Call `get_owned_app` and retain the full draft and exact `updatedAt`.
 3. Preserve untouched fields while applying the intended change.
-4. If the fetched legacy draft declares fewer than the required locales, add the missing dictionaries and replace `langs` with the complete current set.
-5. Re-run `run_app_contract_tests` and `validate_app_draft` on the complete candidate.
-6. Call `update_app_draft` with the exact version.
-7. Fetch the app again and verify the new version, locale declarations, and persisted contract.
+4. If the displayed world data changes, call `infer_app_data_requirements` again and replace the read set and SDK calls together.
+5. If the fetched legacy draft declares fewer than the required locales, add the missing dictionaries and replace `langs` with the complete current set.
+6. Re-run `run_app_contract_tests` and `validate_app_draft` on the complete candidate.
+7. Call `update_app_draft` with the exact version.
+8. Fetch the app again and verify the new version, locale declarations, and persisted contract.
 
 On a stale version, refetch, reapply the intended change, revalidate, and submit again. Never overwrite concurrent changes blindly. Updating an owned public widget changes the shared App for every world that uses it, so confirm that the requested change is intended for all installations before writing.
 

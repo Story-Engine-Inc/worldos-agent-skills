@@ -9,11 +9,41 @@ Read the live `get_authoring_guide` and tool schema first. This reference applie
 - `WS.apps.call(slug, command, payload)`: one deliberate Simulation turn invoking a command declared by another installed widget.
 - `WS.engage({ kind, id, label, on })`: a reversible passive interaction that spends no turn and is handed to the AI with the player's next real action.
 
-An `act` or `apps.call` promise acknowledges host acceptance, not turn completion. Observe `WS.world.subscribe` or the relevant app subscription for completed state.
+An `act` or `apps.call` promise acknowledges host acceptance, not turn completion. Observe `WS.data.subscribe`, `WS.world.subscribe`, or the relevant app subscription for completed state.
 
 ## Read player-visible state
 
-Use `WS.context.get()` for SDK, world, app, locale, turn, and player-character identity. Use `WS.world.getSnapshot()` and `WS.world.subscribe(callback)` for the player-visible world projection.
+Use `WS.context.get()` for SDK, world, app, locale, turn, and player-character identity. For a new read-only widget, call `infer_app_data_requirements` with the creator's plain-language brief. It returns the smallest source set plus exact `WS.data.get` calls, normalized DTO shapes, and preview fixtures. Do not ask the creator to choose source ids or raw state paths.
+
+Load the returned sources in one asynchronous `refresh()` and register exactly one `WS.data.subscribe(() => void refresh())`. Render loading, empty, and error states, escape world/player text, and declare exactly the returned ids in `defaultConfig.integration.reads`.
+
+```js
+async function refresh() {
+  const quests = await WS.data.get("world.quests");
+  render(quests.items);
+}
+WS.data.subscribe(() => void refresh());
+void refresh();
+```
+
+The normalized read catalog is:
+
+| Source id | Read API | DTO |
+| --- | --- | --- |
+| `world.story` | `await WS.data.get("world.story")` | `{ items: [{ id, text, turn, time? }] }` |
+| `world.time` | `await WS.data.get("world.time")` | `{ value }` |
+| `world.stats` | `await WS.data.get("world.stats")` | `{ items: [{ id, label, value, min?, max? }] }` |
+| `world.quests` | `await WS.data.get("world.quests")` | `{ items: [{ id, title, description?, status, kind, reward? }] }` |
+| `world.characters` | `await WS.data.get("world.characters")` | `{ items: [{ id, name, avatar?, role?, intro? }] }` |
+| `world.characterStats` | `await WS.data.get("world.characterStats")` | `{ characters: [{ id, name, stats }] }` |
+| `world.map` | `await WS.data.get("world.map")` | `{ regions, markers }` |
+| `world.chats` | `await WS.data.get("world.chats")` | `{ conversations }` |
+| `world.social` | `await WS.data.get("world.social")` | `{ items }` |
+| `player.inventory` | `await WS.data.get("player.inventory")` | `{ lists: [{ id, label, items }] }` |
+| `player.equipment` | `await WS.data.get("player.equipment")` | `{ items, attributes, proficiencies, xp? }` |
+| `player.wallet` | `await WS.data.get("player.wallet")` | `{ balance }` |
+
+`WS.world.getSnapshot()` and the capability-specific read helpers below remain available for existing published widgets, but new read-only widgets should not parse those raw or legacy shapes.
 
 Check `WS.capabilities.has(name)` before using an optional official capability:
 
@@ -30,24 +60,7 @@ Check `WS.capabilities.has(name)` before using an optional official capability:
 
 The projection excludes private prompts, model and billing settings, raw operation and replay data, hidden characters, and widget namespaces that opted out of sharing.
 
-Declare every source the widget consumes in `defaultConfig.integration.reads`. This is compatibility metadata, not a permission request. It lets App Studio generate the exact SDK calls and lets world validation reject an installation when the target world lacks the corresponding data App.
-
-| Source id | Read API |
-| --- | --- |
-| `world.story` | `(await WS.world.getSnapshot()).story` |
-| `world.time` | `await WS.time.get()` |
-| `world.stats` | `await WS.stats.get()` |
-| `world.quests` | `(await WS.world.getSnapshot()).quests` |
-| `world.characters` | `await WS.characters.list()` |
-| `world.characterStats` | `(await WS.world.getSnapshot()).charStats` |
-| `world.map` | `await WS.map.get()` |
-| `world.chats` | `await WS.chats.list()` |
-| `world.social` | `await WS.social.get()` |
-| `player.inventory` | `(await WS.world.getSnapshot()).inventories` or `await WS.inventory.list(listId)` for one known list |
-| `player.equipment` | `await WS.equipment.get()` |
-| `player.wallet` | `await WS.wallet.getBalance()` |
-
-Load the selected sources once, render loading, empty, and error states, and use one `WS.world.subscribe(callback)` to refresh the view after world changes. Do not add `WS.apps` collaboration or write transactions merely to read world data.
+`reads` is compatibility metadata, not a permission request. It lets world validation reject an installation when the target world lacks the corresponding data App. Do not add `WS.apps` collaboration, copied state, or write transactions merely to read world data.
 
 ## Declare collaboration
 
@@ -118,7 +131,7 @@ Put the manifest in `defaultConfig.integration`:
 
 The restricted schema dialect supports `type`, `description`, `properties`, `required`, `items`, scalar `enum`, `additionalProperties`, `minItems`, `maxItems`, `minLength`, `maxLength`, `minimum`, `maximum`, and `default`. It intentionally rejects `$ref`, patterns, executable formats, alternatives, and remote schemas. If `stateSchema` is omitted, authoring validation infers a strict version-1 schema from `defaultConfig.data`; use an explicit contract for optional fields, bounds and enums.
 
-Call `run_app_contract_tests` before `validate_app_draft`, then preserve the normalized integration returned by the contract runner. Installation validation catches missing dependencies and invalid `initialData`. At runtime, invalid action/command payloads are rejected before the turn, transactions roll back atomically, and AI or widget writes that would leave the calling namespace outside `stateSchema` are dropped.
+Call `run_app_contract_tests` before `validate_app_draft`, then preserve the normalized integration returned by the contract runner. Its `readTests` reports the SDK call, DTO and fixture for every declared source; new code must pass in `normalized` mode. Installation validation catches missing dependencies and invalid `initialData`. At runtime, invalid action/command payloads are rejected before the turn, transactions roll back atomically, and AI or widget writes that would leave the calling namespace outside `stateSchema` are dropped.
 
 The manifest describes compatibility, not install-time permission grants. A widget still receives only the player-visible projection. The host checks declared read availability, installed capabilities, target installation, declared commands, payload shape and size, contracted state, atomicity, idempotency, and replay behavior.
 
